@@ -49,7 +49,11 @@ app.use(helmet({
     },
   },
 }));
-const allowedOrigins = ["http://localhost:5173", "http://localhost:8080"];
+const allowedOrigins = [
+  "http://localhost:5173",
+  "http://localhost:8080",
+  "https://voice.cognitiev.com"
+];
 
 app.use(cors({
   origin: function (origin, callback) {
