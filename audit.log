@@ -1,0 +1,151 @@
+{"level":"info","message":"Auth server running on http://localhost:5000","timestamp":"2025-06-17T09:12:01.324Z"}
+{"level":"info","message":"Auth server running on http://localhost:5000","timestamp":"2025-06-17T09:14:06.957Z"}
+{"clientVersion":"6.9.0","code":"P2022","level":"error","message":"Register error: \nInvalid `prisma.user.findUnique()` invocation in\n/Users/satyampandey/Desktop/Cognitiev/your-agency-backend/index.js:152:46\n\n  149 }\n  150 \n  151 try {\n→ 152   const existingUser = await prisma.user.findUnique(\nThe column `User.consentGivenAt` does not exist in the current database.","meta":{"column":"User.consentGivenAt","modelName":"User"},"name":"PrismaClientKnownRequestError","stack":"PrismaClientKnownRequestError: \nInvalid `prisma.user.findUnique()` invocation in\n/Users/satyampandey/Desktop/Cognitiev/your-agency-backend/index.js:152:46\n\n  149 }\n  150 \n  151 try {\n→ 152   const existingUser = await prisma.user.findUnique(\nThe column `User.consentGivenAt` does not exist in the current database.\n    at Zn.handleRequestError (/Users/satyampandey/Desktop/Cognitiev/your-agency-backend/node_modules/@prisma/client/runtime/library.js:121:7459)\n    at Zn.handleAndLogRequestError (/Users/satyampandey/Desktop/Cognitiev/your-agency-backend/node_modules/@prisma/client/runtime/library.js:121:6784)\n    at Zn.request (/Users/satyampandey/Desktop/Cognitiev/your-agency-backend/node_modules/@prisma/client/runtime/library.js:121:6491)\n    at async l (/Users/satyampandey/Desktop/Cognitiev/your-agency-backend/node_modules/@prisma/client/runtime/library.js:130:9778)\n    at async /Users/satyampandey/Desktop/Cognitiev/your-agency-backend/index.js:152:28","timestamp":"2025-06-17T09:16:09.922Z"}
+{"level":"info","message":"Auth server running on http://localhost:5000","timestamp":"2025-06-17T09:18:50.305Z"}
+{"level":"info","message":{"action":"Registered","email":"satyam@cognitiev.com","timestamp":"2025-06-17T09:19:22.155Z"},"timestamp":"2025-06-17T09:19:22.155Z"}
+{"level":"info","message":"OTP sent to satyam@cognitiev.com","timestamp":"2025-06-17T09:20:01.793Z"}
+{"level":"info","message":{"action":"OTP sent","email":"satyam@cognitiev.com","timestamp":"2025-06-17T09:20:01.793Z"},"timestamp":"2025-06-17T09:20:01.793Z"}
+{"level":"info","message":{"action":"Logged in","email":"satyam@cognitiev.com","timestamp":"2025-06-17T09:20:20.120Z"},"timestamp":"2025-06-17T09:20:20.120Z"}
+{"level":"info","message":"Auth server running on http://localhost:5000","timestamp":"2025-06-17T09:25:24.847Z"}
+{"level":"info","message":"Updating OTP for user: satyam@cognitiev.com with hash: $2b$10$cn2i1qEvE1.sZjBQCBK0sONe9cw67cZ9DhmYkTI5NyPSDhZ5Z.r66 expiry: Tue Jun 17 2025 15:01:39 GMT+0530 (India Standard Time)","timestamp":"2025-06-17T09:26:39.170Z"}
+{"level":"info","message":"OTP sent to satyam@cognitiev.com","timestamp":"2025-06-17T09:26:41.876Z"}
+{"level":"info","message":{"action":"OTP sent","email":"satyam@cognitiev.com","timestamp":"2025-06-17T09:26:41.876Z"},"timestamp":"2025-06-17T09:26:41.876Z"}
+{"level":"info","message":{"action":"Logged in","email":"satyam@cognitiev.com","timestamp":"2025-06-17T09:27:25.082Z"},"timestamp":"2025-06-17T09:27:25.082Z"}
+{"level":"info","message":"Auth server running on http://localhost:5000","timestamp":"2025-06-17T09:27:55.908Z"}
+{"level":"info","message":"Updating OTP for user: satyam@cognitiev.com with hash: $2b$10$Ii8oKKl91cK2lbGWX93T6.1DFza8nmRjh7tpXp1XEh.Pu3Ib8QT1S expiry: Tue Jun 17 2025 15:05:23 GMT+0530 (India Standard Time)","timestamp":"2025-06-17T09:30:23.034Z"}
+{"level":"info","message":"OTP saved successfully for satyam@cognitiev.com","timestamp":"2025-06-17T09:30:23.768Z"}
+{"level":"info","message":"OTP sent to satyam@cognitiev.com","timestamp":"2025-06-17T09:30:25.685Z"}
+{"level":"info","message":{"action":"OTP sent","email":"satyam@cognitiev.com","timestamp":"2025-06-17T09:30:25.685Z"},"timestamp":"2025-06-17T09:30:25.685Z"}
+{"level":"info","message":{"action":"Logged in","email":"satyam@cognitiev.com","timestamp":"2025-06-17T09:31:12.202Z"},"timestamp":"2025-06-17T09:31:12.202Z"}
+{"level":"info","message":"Updating OTP for user: satyam@cognitiev.com with hash: $2b$10$ncH1wR7WOmVeZOmGybZZhOl3Q0.4XSM/MrFwwT5VbWQdA.OdyEpZa expiry: Tue Jun 17 2025 15:16:19 GMT+0530 (India Standard Time)","timestamp":"2025-06-17T09:41:19.642Z"}
+{"level":"info","message":"OTP saved successfully for satyam@cognitiev.com","timestamp":"2025-06-17T09:41:20.258Z"}
+{"level":"info","message":"OTP sent to satyam@cognitiev.com","timestamp":"2025-06-17T09:41:22.623Z"}
+{"level":"info","message":{"action":"OTP sent","email":"satyam@cognitiev.com","timestamp":"2025-06-17T09:41:22.624Z"},"timestamp":"2025-06-17T09:41:22.624Z"}
+{"level":"info","message":{"action":"Logged in","email":"satyam@cognitiev.com","timestamp":"2025-06-17T09:42:00.608Z"},"timestamp":"2025-06-17T09:42:00.608Z"}
+{"level":"info","message":"Updating OTP for user: satyam@cognitiev.com with hash: $2b$10$t8c8aoErVJW4Ut/k1i8o9OTXgTG0ZAX.pr3E0u0v72/Qpu3002RrW expiry: Tue Jun 17 2025 15:17:38 GMT+0530 (India Standard Time)","timestamp":"2025-06-17T09:42:38.589Z"}
+{"level":"info","message":"OTP saved successfully for satyam@cognitiev.com","timestamp":"2025-06-17T09:42:39.011Z"}
+{"level":"info","message":"OTP sent to satyam@cognitiev.com","timestamp":"2025-06-17T09:42:41.058Z"}
+{"level":"info","message":{"action":"OTP sent","email":"satyam@cognitiev.com","timestamp":"2025-06-17T09:42:41.058Z"},"timestamp":"2025-06-17T09:42:41.058Z"}
+{"level":"info","message":{"action":"Logged in","email":"satyam@cognitiev.com","timestamp":"2025-06-17T09:43:11.876Z"},"timestamp":"2025-06-17T09:43:11.876Z"}
+{"level":"info","message":"Updating OTP for user: satyam@cognitiev.com with hash: $2b$10$ben6JH30vVDH126sbqh4me8CQ6IP/jW7y8/ykB.1b8ps6/.qbGzKm expiry: Tue Jun 17 2025 15:18:45 GMT+0530 (India Standard Time)","timestamp":"2025-06-17T09:43:45.147Z"}
+{"level":"info","message":"OTP saved successfully for satyam@cognitiev.com","timestamp":"2025-06-17T09:43:45.567Z"}
+{"level":"info","message":"OTP sent to satyam@cognitiev.com","timestamp":"2025-06-17T09:43:50.998Z"}
+{"level":"info","message":{"action":"OTP sent","email":"satyam@cognitiev.com","timestamp":"2025-06-17T09:43:50.999Z"},"timestamp":"2025-06-17T09:43:50.999Z"}
+{"level":"info","message":"Auth server running on http://localhost:5000","timestamp":"2025-06-18T04:35:39.691Z"}
+{"level":"info","message":{"action":"Registered","email":"workatulsingh@gmail.com","timestamp":"2025-06-18T04:41:17.683Z"},"timestamp":"2025-06-18T04:41:17.683Z"}
+{"level":"info","message":"Updating OTP for user: workatulsingh@gmail.com with hash: $2b$10$RXratRhH3d4aFLt4WcNwxemVfCzToNlqy/QXS3ifTHKwr3uChoco. expiry: Wed Jun 18 2025 10:16:59 GMT+0530 (India Standard Time)","timestamp":"2025-06-18T04:41:59.018Z"}
+{"level":"info","message":"OTP saved successfully for workatulsingh@gmail.com","timestamp":"2025-06-18T04:41:59.575Z"}
+{"level":"info","message":"OTP sent to workatulsingh@gmail.com","timestamp":"2025-06-18T04:42:01.360Z"}
+{"level":"info","message":{"action":"OTP sent","email":"workatulsingh@gmail.com","timestamp":"2025-06-18T04:42:01.360Z"},"timestamp":"2025-06-18T04:42:01.360Z"}
+{"level":"info","message":"Updating OTP for user: workatulsingh@gmail.com with hash: $2b$10$xjDaixRnYikd5R5ZntRNPO9BPQmnvm9cEl.7GNwxiRQRVkjz/3Dym expiry: Wed Jun 18 2025 10:18:38 GMT+0530 (India Standard Time)","timestamp":"2025-06-18T04:43:38.697Z"}
+{"level":"info","message":"OTP saved successfully for workatulsingh@gmail.com","timestamp":"2025-06-18T04:43:38.946Z"}
+{"level":"info","message":"OTP sent to workatulsingh@gmail.com","timestamp":"2025-06-18T04:43:40.423Z"}
+{"level":"info","message":{"action":"OTP sent","email":"workatulsingh@gmail.com","timestamp":"2025-06-18T04:43:40.424Z"},"timestamp":"2025-06-18T04:43:40.424Z"}
+{"level":"info","message":"Updating OTP for user: satyam@cognitiev.com with hash: $2b$10$RbKGUvDwPR9kebnlmmtPpuhvYpKL0wKttcqAV4/6QwxV32CH8uf0q expiry: Wed Jun 18 2025 10:20:53 GMT+0530 (India Standard Time)","timestamp":"2025-06-18T04:45:53.767Z"}
+{"level":"info","message":"OTP saved successfully for satyam@cognitiev.com","timestamp":"2025-06-18T04:45:54.026Z"}
+{"level":"info","message":"OTP sent to satyam@cognitiev.com","timestamp":"2025-06-18T04:45:55.731Z"}
+{"level":"info","message":{"action":"OTP sent","email":"satyam@cognitiev.com","timestamp":"2025-06-18T04:45:55.731Z"},"timestamp":"2025-06-18T04:45:55.731Z"}
+{"level":"info","message":{"action":"Logged in","email":"satyam@cognitiev.com","timestamp":"2025-06-18T04:46:15.848Z"},"timestamp":"2025-06-18T04:46:15.848Z"}
+{"level":"info","message":"Auth server running on http://localhost:5000","timestamp":"2025-06-18T05:46:38.842Z"}
+{"level":"info","message":"Auth server running on http://localhost:5000","timestamp":"2025-06-18T06:00:33.017Z"}
+{"level":"info","message":{"action":"Registered","email":"pandeysatyam1708@gmail.com","timestamp":"2025-06-18T06:29:34.250Z"},"timestamp":"2025-06-18T06:29:34.250Z"}
+{"level":"info","message":"Updating OTP for user: pandeysatyam1708@gmail.com with hash: $2b$10$orRdfYQPth1Ud4TJ685CUeOARTRKQalPKn.bL.u1qhbO6fPAOH.8S expiry: Wed Jun 18 2025 12:04:53 GMT+0530 (India Standard Time)","timestamp":"2025-06-18T06:29:53.198Z"}
+{"level":"info","message":"OTP saved successfully for pandeysatyam1708@gmail.com","timestamp":"2025-06-18T06:29:53.738Z"}
+{"level":"info","message":"OTP sent to pandeysatyam1708@gmail.com","timestamp":"2025-06-18T06:29:55.429Z"}
+{"level":"info","message":{"action":"OTP sent","email":"pandeysatyam1708@gmail.com","timestamp":"2025-06-18T06:29:55.429Z"},"timestamp":"2025-06-18T06:29:55.429Z"}
+{"level":"info","message":{"action":"Registered","email":"atul@cognitiev.com","timestamp":"2025-06-18T06:31:43.488Z"},"timestamp":"2025-06-18T06:31:43.488Z"}
+{"level":"info","message":"Updating OTP for user: atul@cognitiev.com with hash: $2b$10$sdVsCmGBf67pV/JIUvCNXug9WJ0cSn45paHRjcXYQ/9sIPRGr3ova expiry: Wed Jun 18 2025 12:07:04 GMT+0530 (India Standard Time)","timestamp":"2025-06-18T06:32:04.246Z"}
+{"level":"info","message":"OTP saved successfully for atul@cognitiev.com","timestamp":"2025-06-18T06:32:04.504Z"}
+{"level":"info","message":"OTP sent to atul@cognitiev.com","timestamp":"2025-06-18T06:32:05.992Z"}
+{"level":"info","message":{"action":"OTP sent","email":"atul@cognitiev.com","timestamp":"2025-06-18T06:32:05.993Z"},"timestamp":"2025-06-18T06:32:05.993Z"}
+{"level":"info","message":"Updating OTP for user: satyam@cognitiev.com with hash: $2b$10$JJ15f/Xk4nZ.PxwelsDdhOXfV1wrZ0hSiXx70sbw6fzHaO1PNR3bC expiry: Wed Jun 18 2025 12:08:31 GMT+0530 (India Standard Time)","timestamp":"2025-06-18T06:33:31.910Z"}
+{"level":"info","message":"OTP saved successfully for satyam@cognitiev.com","timestamp":"2025-06-18T06:33:32.168Z"}
+{"level":"info","message":"OTP sent to satyam@cognitiev.com","timestamp":"2025-06-18T06:33:33.154Z"}
+{"level":"info","message":{"action":"OTP sent","email":"satyam@cognitiev.com","timestamp":"2025-06-18T06:33:33.154Z"},"timestamp":"2025-06-18T06:33:33.154Z"}
+{"level":"info","message":{"action":"Logged in","email":"satyam@cognitiev.com","timestamp":"2025-06-18T06:36:19.285Z"},"timestamp":"2025-06-18T06:36:19.285Z"}
+{"level":"info","message":"Auth server running on http://localhost:5000","timestamp":"2025-06-18T10:18:46.112Z"}
+{"level":"info","message":"Auth server running on http://localhost:5000","timestamp":"2025-06-18T10:51:09.589Z"}
+{"level":"info","message":"Auth server running on http://localhost:5000","timestamp":"2025-06-18T11:14:14.726Z"}
+{"level":"info","message":"Auth server running on http://localhost:5000","timestamp":"2025-06-18T11:30:30.845Z"}
+{"level":"error","message":"Forgot password error: Cannot read properties of undefined (reading 'upsert')","stack":"TypeError: Cannot read properties of undefined (reading 'upsert')\n    at /Users/satyampandey/Desktop/Cognitiev/your-agency-backend/index.js:412:39","timestamp":"2025-06-18T11:31:09.393Z"}
+{"level":"info","message":"Auth server running on http://localhost:5000","timestamp":"2025-06-18T11:32:31.755Z"}
+{"clientVersion":"6.9.0","level":"error","message":"Forgot password error: \nInvalid `prisma.passwordResetToken.upsert()` invocation in\n/Users/satyampandey/Desktop/Cognitiev/your-agency-backend/index.js:412:39\n\n  409 const expiresAt = new Date(Date.now() + 60 * 60 * 1000);\n  410 \n  411 // Save token in PasswordResetToken table (replace any previous token for this user)\n→ 412 await prisma.passwordResetToken.upsert({\n        where: {\n          userId: 3,\n      ?   id?: Int,\n      ?   token?: String,\n      ?   AND?: PasswordResetTokenWhereInput | PasswordResetTokenWhereInput[],\n      ?   OR?: PasswordResetTokenWhereInput[],\n      ?   NOT?: PasswordResetTokenWhereInput | PasswordResetTokenWhereInput[],\n      ?   expiresAt?: DateTimeFilter | DateTime,\n      ?   createdAt?: DateTimeFilter | DateTime,\n      ?   user?: UserScalarRelationFilter | UserWhereInput\n        },\n        update: {\n          token: \"057215350abe7b829b4352b0137bab5e7cadad69955f00f7509c3552614befff\",\n          expiresAt: new Date(\"2025-06-18T12:32:38.046Z\")\n        },\n        create: {\n          token: \"057215350abe7b829b4352b0137bab5e7cadad69955f00f7509c3552614befff\",\n          userId: 3,\n          expiresAt: new Date(\"2025-06-18T12:32:38.046Z\")\n        }\n      })\n\nArgument `where` of type PasswordResetTokenWhereUniqueInput needs at least one of `id` or `token` arguments. Available options are marked with ?.","name":"PrismaClientValidationError","stack":"PrismaClientValidationError: \nInvalid `prisma.passwordResetToken.upsert()` invocation in\n/Users/satyampandey/Desktop/Cognitiev/your-agency-backend/index.js:412:39\n\n  409 const expiresAt = new Date(Date.now() + 60 * 60 * 1000);\n  410 \n  411 // Save token in PasswordResetToken table (replace any previous token for this user)\n→ 412 await prisma.passwordResetToken.upsert({\n        where: {\n          userId: 3,\n      ?   id?: Int,\n      ?   token?: String,\n      ?   AND?: PasswordResetTokenWhereInput | PasswordResetTokenWhereInput[],\n      ?   OR?: PasswordResetTokenWhereInput[],\n      ?   NOT?: PasswordResetTokenWhereInput | PasswordResetTokenWhereInput[],\n      ?   expiresAt?: DateTimeFilter | DateTime,\n      ?   createdAt?: DateTimeFilter | DateTime,\n      ?   user?: UserScalarRelationFilter | UserWhereInput\n        },\n        update: {\n          token: \"057215350abe7b829b4352b0137bab5e7cadad69955f00f7509c3552614befff\",\n          expiresAt: new Date(\"2025-06-18T12:32:38.046Z\")\n        },\n        create: {\n          token: \"057215350abe7b829b4352b0137bab5e7cadad69955f00f7509c3552614befff\",\n          userId: 3,\n          expiresAt: new Date(\"2025-06-18T12:32:38.046Z\")\n        }\n      })\n\nArgument `where` of type PasswordResetTokenWhereUniqueInput needs at least one of `id` or `token` arguments. Available options are marked with ?.\n    at kn (/Users/satyampandey/Desktop/Cognitiev/your-agency-backend/node_modules/@prisma/client/runtime/library.js:29:1363)\n    at Zn.handleRequestError (/Users/satyampandey/Desktop/Cognitiev/your-agency-backend/node_modules/@prisma/client/runtime/library.js:121:7102)\n    at Zn.handleAndLogRequestError (/Users/satyampandey/Desktop/Cognitiev/your-agency-backend/node_modules/@prisma/client/runtime/library.js:121:6784)\n    at Zn.request (/Users/satyampandey/Desktop/Cognitiev/your-agency-backend/node_modules/@prisma/client/runtime/library.js:121:6491)\n    at async l (/Users/satyampandey/Desktop/Cognitiev/your-agency-backend/node_modules/@prisma/client/runtime/library.js:130:9778)\n    at async /Users/satyampandey/Desktop/Cognitiev/your-agency-backend/index.js:412:7","timestamp":"2025-06-18T11:32:38.057Z"}
+{"level":"info","message":"Auth server running on http://localhost:5000","timestamp":"2025-06-18T11:35:27.022Z"}
+{"level":"info","message":{"action":"Registered","email":"satyampandeydevmail@gmail.com","timestamp":"2025-06-18T11:35:32.739Z"},"timestamp":"2025-06-18T11:35:32.739Z"}
+{"level":"info","message":"Updating OTP for user: satyampandeydevmail@gmail.com with hash: $2b$10$K8ZS7aMgn19C5eorggpTHuI/uh12nZpqadIiYmKGSJvwgTZRsSX5G expiry: Wed Jun 18 2025 17:10:43 GMT+0530 (India Standard Time)","timestamp":"2025-06-18T11:35:43.479Z"}
+{"level":"info","message":"OTP saved successfully for satyampandeydevmail@gmail.com","timestamp":"2025-06-18T11:35:44.172Z"}
+{"level":"info","message":"OTP sent to satyampandeydevmail@gmail.com","timestamp":"2025-06-18T11:35:46.276Z"}
+{"level":"info","message":{"action":"OTP sent","email":"satyampandeydevmail@gmail.com","timestamp":"2025-06-18T11:35:46.276Z"},"timestamp":"2025-06-18T11:35:46.276Z"}
+{"level":"info","message":"Auth server running on http://localhost:5000","timestamp":"2025-06-18T11:40:59.331Z"}
+{"level":"info","message":"Password reset email sent to pandeysatyam1708@gmail.com","timestamp":"2025-06-18T11:41:46.825Z"}
+{"level":"info","message":{"action":"Requested password reset","email":"pandeysatyam1708@gmail.com","timestamp":"2025-06-18T11:41:46.826Z"},"timestamp":"2025-06-18T11:41:46.826Z"}
+{"level":"info","message":"Updating OTP for user: satyam@cognitiev.com with hash: $2b$10$yGG.GfKree5HoC4cae9O2uxYBZ5nYM5VyTVO7mZ0St5eEddwavc9i expiry: Wed Jun 18 2025 17:17:34 GMT+0530 (India Standard Time)","timestamp":"2025-06-18T11:42:34.091Z"}
+{"level":"info","message":"OTP saved successfully for satyam@cognitiev.com","timestamp":"2025-06-18T11:42:34.696Z"}
+{"level":"info","message":"OTP sent to satyam@cognitiev.com","timestamp":"2025-06-18T11:42:36.685Z"}
+{"level":"info","message":{"action":"OTP sent","email":"satyam@cognitiev.com","timestamp":"2025-06-18T11:42:36.686Z"},"timestamp":"2025-06-18T11:42:36.686Z"}
+{"level":"info","message":"Auth server running on http://localhost:5000","timestamp":"2025-06-18T11:44:45.159Z"}
+{"level":"info","message":"Updating OTP for user: satyam@cognitiev.com with hash: $2b$10$M3MfTz.MOUC8uezAZ4JUjemRC.jxqIyl940ENtVuzlYDxOuXuwYWi expiry: Wed Jun 18 2025 17:20:15 GMT+0530 (India Standard Time)","timestamp":"2025-06-18T11:45:15.894Z"}
+{"level":"info","message":"OTP saved successfully for satyam@cognitiev.com","timestamp":"2025-06-18T11:45:16.542Z"}
+{"level":"info","message":"OTP sent to satyam@cognitiev.com","timestamp":"2025-06-18T11:45:18.877Z"}
+{"level":"info","message":{"action":"OTP sent","email":"satyam@cognitiev.com","timestamp":"2025-06-18T11:45:18.877Z"},"timestamp":"2025-06-18T11:45:18.877Z"}
+{"level":"info","message":{"action":"Logged in","email":"satyam@cognitiev.com","timestamp":"2025-06-18T11:45:37.561Z"},"timestamp":"2025-06-18T11:45:37.561Z"}
+{"level":"info","message":"Auth server running on http://localhost:5000","timestamp":"2025-06-19T04:56:50.754Z"}
+{"level":"info","message":"Updating OTP for user: satyam@cognitiev.com with hash: $2b$10$tmXXCWTQNX6eVbbDE4dS0eL4F4QwfrFhVOTqsYb5REiaL.sV8lboa expiry: Thu Jun 19 2025 10:32:30 GMT+0530 (India Standard Time)","timestamp":"2025-06-19T04:57:30.635Z"}
+{"level":"info","message":"OTP saved successfully for satyam@cognitiev.com","timestamp":"2025-06-19T04:57:31.336Z"}
+{"level":"info","message":"OTP sent to satyam@cognitiev.com","timestamp":"2025-06-19T04:57:33.881Z"}
+{"level":"info","message":{"action":"OTP sent","email":"satyam@cognitiev.com","timestamp":"2025-06-19T04:57:33.882Z"},"timestamp":"2025-06-19T04:57:33.882Z"}
+{"level":"info","message":{"action":"Logged in","email":"satyam@cognitiev.com","timestamp":"2025-06-19T04:58:09.469Z"},"timestamp":"2025-06-19T04:58:09.469Z"}
+{"level":"info","message":"Auth server running on http://localhost:5000","timestamp":"2025-06-19T06:25:52.624Z"}
+{"level":"info","message":"Updating OTP for user: satyam@cognitiev.com with hash: $2b$10$L6WvCZ637H2ssV3SQ3SwI.O6twnN5KXlAv3sC.57Wey3L2W5LXK6G expiry: Thu Jun 19 2025 12:06:59 GMT+0530 (India Standard Time)","timestamp":"2025-06-19T06:31:59.304Z"}
+{"level":"info","message":"OTP saved successfully for satyam@cognitiev.com","timestamp":"2025-06-19T06:32:00.234Z"}
+{"level":"info","message":"OTP sent to satyam@cognitiev.com","timestamp":"2025-06-19T06:32:03.217Z"}
+{"level":"info","message":{"action":"OTP sent","email":"satyam@cognitiev.com","timestamp":"2025-06-19T06:32:03.218Z"},"timestamp":"2025-06-19T06:32:03.218Z"}
+{"level":"info","message":{"action":"Logged in","email":"satyam@cognitiev.com","timestamp":"2025-06-19T06:32:32.816Z"},"timestamp":"2025-06-19T06:32:32.816Z"}
+{"level":"info","message":{"action":"Logged out","email":"satyam@cognitiev.com","timestamp":"2025-06-19T06:43:45.399Z"},"timestamp":"2025-06-19T06:43:45.399Z"}
+{"level":"info","message":{"action":"Logged out","email":"satyam@cognitiev.com","timestamp":"2025-06-19T06:43:47.808Z"},"timestamp":"2025-06-19T06:43:47.808Z"}
+{"level":"info","message":"Updating OTP for user: satyam@cognitiev.com with hash: $2b$10$i7YNyZ5o79Bi/L2TeCXjMeeK6pUs6lZ7dbzKbAj7NcoY3xc.q./6y expiry: Thu Jun 19 2025 12:19:30 GMT+0530 (India Standard Time)","timestamp":"2025-06-19T06:44:30.209Z"}
+{"level":"info","message":"OTP saved successfully for satyam@cognitiev.com","timestamp":"2025-06-19T06:44:31.038Z"}
+{"level":"info","message":"OTP sent to satyam@cognitiev.com","timestamp":"2025-06-19T06:44:33.708Z"}
+{"level":"info","message":{"action":"OTP sent","email":"satyam@cognitiev.com","timestamp":"2025-06-19T06:44:33.708Z"},"timestamp":"2025-06-19T06:44:33.708Z"}
+{"level":"info","message":{"action":"Logged in","email":"satyam@cognitiev.com","timestamp":"2025-06-19T06:45:02.220Z"},"timestamp":"2025-06-19T06:45:02.220Z"}
+{"level":"info","message":"Auth server running on http://localhost:5000","timestamp":"2025-06-19T06:54:38.149Z"}
+{"level":"info","message":"Auth server running on http://localhost:5000","timestamp":"2025-06-19T07:04:45.927Z"}
+{"level":"info","message":"Updating OTP for user: satyam@cognitiev.com with hash: $2b$10$uEVRFSsAoHc8vNTdfPrN0u.KIVOdyX/pxxZflF/X7mr1E9VMjPHTC expiry: Thu Jun 19 2025 12:41:09 GMT+0530 (India Standard Time)","timestamp":"2025-06-19T07:06:09.173Z"}
+{"level":"info","message":"OTP saved successfully for satyam@cognitiev.com","timestamp":"2025-06-19T07:06:10.004Z"}
+{"level":"info","message":"OTP sent to satyam@cognitiev.com","timestamp":"2025-06-19T07:06:11.306Z"}
+{"level":"info","message":{"action":"OTP sent","email":"satyam@cognitiev.com","timestamp":"2025-06-19T07:06:11.307Z"},"timestamp":"2025-06-19T07:06:11.307Z"}
+{"level":"info","message":{"action":"Logged in","email":"satyam@cognitiev.com","timestamp":"2025-06-19T07:06:37.737Z"},"timestamp":"2025-06-19T07:06:37.737Z"}
+{"level":"info","message":"Auth server running on http://localhost:5000","timestamp":"2025-06-19T07:39:07.730Z"}
+{"level":"info","message":"Updating OTP for user: satyam@cognitiev.com with hash: $2b$10$qFpQFx6AdORjA4Q5aiiUH.XhbpSgyeSWeGMNMwSegvWYT.YfiWnl. expiry: Thu Jun 19 2025 13:20:03 GMT+0530 (India Standard Time)","timestamp":"2025-06-19T07:45:03.698Z"}
+{"level":"info","message":"OTP saved successfully for satyam@cognitiev.com","timestamp":"2025-06-19T07:45:04.494Z"}
+{"level":"info","message":"OTP sent to satyam@cognitiev.com","timestamp":"2025-06-19T07:45:06.504Z"}
+{"level":"info","message":{"action":"OTP sent","email":"satyam@cognitiev.com","timestamp":"2025-06-19T07:45:06.504Z"},"timestamp":"2025-06-19T07:45:06.504Z"}
+{"level":"info","message":{"action":"Logged in","email":"satyam@cognitiev.com","timestamp":"2025-06-19T07:45:24.514Z"},"timestamp":"2025-06-19T07:45:24.515Z"}
+{"level":"info","message":"Auth server running on http://localhost:5000","timestamp":"2025-06-19T07:49:11.474Z"}
+{"level":"info","message":"Auth server running on http://localhost:5000","timestamp":"2025-06-19T07:50:38.199Z"}
+{"level":"info","message":"Auth server running on http://localhost:5000","timestamp":"2025-06-19T07:51:05.770Z"}
+{"level":"info","message":"Auth server running on http://localhost:5000","timestamp":"2025-06-19T07:51:29.490Z"}
+{"level":"info","message":"Auth server running on http://localhost:5000","timestamp":"2025-06-19T07:52:05.137Z"}
+{"level":"info","message":"Auth server running on http://localhost:5000","timestamp":"2025-06-19T07:56:27.246Z"}
+{"level":"info","message":{"action":"Updated profile","email":"satyam@cognitiev.com","timestamp":"2025-06-19T07:58:36.586Z"},"timestamp":"2025-06-19T07:58:36.587Z"}
+{"level":"info","message":"Updating OTP for user: satyam@cognitiev.com with hash: $2b$10$Udz1N55/zjRX4J4igi5DO.MNuLEregqhbm1IujdN928tBws3kZScO expiry: Thu Jun 19 2025 13:36:29 GMT+0530 (India Standard Time)","timestamp":"2025-06-19T08:01:29.045Z"}
+{"level":"info","message":"OTP saved successfully for satyam@cognitiev.com","timestamp":"2025-06-19T08:01:29.934Z"}
+{"level":"info","message":"OTP sent to satyam@cognitiev.com","timestamp":"2025-06-19T08:01:32.916Z"}
+{"level":"info","message":{"action":"OTP sent","email":"satyam@cognitiev.com","timestamp":"2025-06-19T08:01:32.916Z"},"timestamp":"2025-06-19T08:01:32.916Z"}
+{"level":"info","message":{"action":"Logged in","email":"satyam@cognitiev.com","timestamp":"2025-06-19T08:02:20.219Z"},"timestamp":"2025-06-19T08:02:20.219Z"}
+{"level":"info","message":{"action":"Updated profile","email":"satyam@cognitiev.com","timestamp":"2025-06-19T08:08:20.935Z"},"timestamp":"2025-06-19T08:08:20.935Z"}
+{"level":"info","message":{"action":"Updated profile","email":"satyam@cognitiev.com","timestamp":"2025-06-19T08:08:28.400Z"},"timestamp":"2025-06-19T08:08:28.401Z"}
+{"level":"info","message":{"action":"Logged out","email":"satyam@cognitiev.com","timestamp":"2025-06-19T08:08:39.865Z"},"timestamp":"2025-06-19T08:08:39.865Z"}
+{"level":"info","message":{"action":"Registered","email":"admin@cognitiev.com","timestamp":"2025-06-19T08:10:15.643Z"},"timestamp":"2025-06-19T08:10:15.643Z"}
+{"level":"info","message":"Updating OTP for user: admin@cognitiev.com with hash: $2b$10$UXwfSkb/OfSqngzXy1dvh.VNwJALAwc5Ftb/Sm2Bg5Kz2kNLJ80pK expiry: Thu Jun 19 2025 13:45:40 GMT+0530 (India Standard Time)","timestamp":"2025-06-19T08:10:40.804Z"}
+{"level":"info","message":"OTP saved successfully for admin@cognitiev.com","timestamp":"2025-06-19T08:10:42.046Z"}
+{"level":"info","message":"OTP sent to admin@cognitiev.com","timestamp":"2025-06-19T08:10:43.852Z"}
+{"level":"info","message":{"action":"OTP sent","email":"admin@cognitiev.com","timestamp":"2025-06-19T08:10:43.852Z"},"timestamp":"2025-06-19T08:10:43.852Z"}
+{"level":"info","message":{"action":"Logged in","email":"admin@cognitiev.com","timestamp":"2025-06-19T08:11:16.144Z"},"timestamp":"2025-06-19T08:11:16.144Z"}
+{"level":"info","message":"Updating OTP for user: satyam@cognitiev.com with hash: $2b$10$z6Ehm6hOUdeKEmd8KltvE.5LUMlFS7vR48.hXCz2tdgDPu3ui98UG expiry: Thu Jun 19 2025 16:37:53 GMT+0530 (India Standard Time)","timestamp":"2025-06-19T11:02:53.459Z"}
+{"level":"info","message":"OTP saved successfully for satyam@cognitiev.com","timestamp":"2025-06-19T11:02:54.091Z"}
+{"level":"info","message":"OTP sent to satyam@cognitiev.com","timestamp":"2025-06-19T11:02:55.993Z"}
+{"level":"info","message":{"action":"OTP sent","email":"satyam@cognitiev.com","timestamp":"2025-06-19T11:02:55.993Z"},"timestamp":"2025-06-19T11:02:55.993Z"}
+{"level":"info","message":{"action":"Logged in","email":"satyam@cognitiev.com","timestamp":"2025-06-19T11:03:22.243Z"},"timestamp":"2025-06-19T11:03:22.243Z"}
+{"level":"info","message":"Auth server running on http://localhost:5000","timestamp":"2025-06-20T04:23:10.096Z"}
+{"clientVersion":"6.9.0","level":"error","message":"Login error: \nInvalid `prisma.user.findUnique()` invocation in\n/Users/satyampandey/Desktop/Cognitiev/your-agency/your-agency-backend/index.js:196:38\n\n  193 \n  194 const { email, password } = req.body;\n  195 try {\n→ 196   const user = await prisma.user.findUnique(\nCan't reach database server at `ep-blue-butterfly-a86vb92m-pooler.eastus2.azure.neon.tech:5432`\n\nPlease make sure your database server is running at `ep-blue-butterfly-a86vb92m-pooler.eastus2.azure.neon.tech:5432`.","name":"PrismaClientInitializationError","stack":"PrismaClientInitializationError: \nInvalid `prisma.user.findUnique()` invocation in\n/Users/satyampandey/Desktop/Cognitiev/your-agency/your-agency-backend/index.js:196:38\n\n  193 \n  194 const { email, password } = req.body;\n  195 try {\n→ 196   const user = await prisma.user.findUnique(\nCan't reach database server at `ep-blue-butterfly-a86vb92m-pooler.eastus2.azure.neon.tech:5432`\n\nPlease make sure your database server is running at `ep-blue-butterfly-a86vb92m-pooler.eastus2.azure.neon.tech:5432`.\n    at Zn.handleRequestError (/Users/satyampandey/Desktop/Cognitiev/your-agency/your-agency-backend/node_modules/@prisma/client/runtime/library.js:121:7759)\n    at Zn.handleAndLogRequestError (/Users/satyampandey/Desktop/Cognitiev/your-agency/your-agency-backend/node_modules/@prisma/client/runtime/library.js:121:6784)\n    at Zn.request (/Users/satyampandey/Desktop/Cognitiev/your-agency/your-agency-backend/node_modules/@prisma/client/runtime/library.js:121:6491)\n    at async l (/Users/satyampandey/Desktop/Cognitiev/your-agency/your-agency-backend/node_modules/@prisma/client/runtime/library.js:130:9778)\n    at async /Users/satyampandey/Desktop/Cognitiev/your-agency/your-agency-backend/index.js:196:20","timestamp":"2025-06-20T04:23:49.234Z"}
