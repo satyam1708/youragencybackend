@@ -81,16 +81,22 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
+
 // === CSRF Setup ===
 const csrfProtection = csurf({
   cookie: {
     httpOnly: true,
     secure: process.env.NODE_ENV === "production",
-    sameSite: "Lax"
-,
+    sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
   },
+  value: (req) => {
+    // Try to read token from header (recommended for APIs)
+    return req.headers['x-csrf-token'] || req.body._csrf || req.query._csrf;
+  }
 });
+
 app.use(csrfProtection);
+
 
 // === Rate Limiting ===
 const limiter = rateLimit({
