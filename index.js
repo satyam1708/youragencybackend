@@ -133,6 +133,10 @@ const MAX_OTP_ATTEMPTS = 5;
 const LOCKOUT_DURATION = 15 * 60 * 1000;
 
 // === Routes ===
+//health check 
+app.get("/", (req, res) => {
+  res.status(200).json({ message: "Backend is up and running 🚀" });
+});
 
 // Registration
 app.post("/auth/register",
