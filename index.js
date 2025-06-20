@@ -16,6 +16,8 @@ require("dotenv").config();
 
 const prisma = new PrismaClient();
 const app = express();
+app.set('trust proxy', 1);  // Trust first proxy
+
 
 // === Logger Setup ===
 const logger = winston.createLogger({
