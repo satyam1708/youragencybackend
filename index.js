@@ -54,7 +54,8 @@ app.use(helmet({
 const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:8080",
-  "https://voice.cognitiev.com"
+  "https://voice.cognitiev.com",
+  "https://youragency2.netlify.app"
 ];
 
 app.use(cors({
