@@ -16,8 +16,7 @@ require("dotenv").config();
 
 const prisma = new PrismaClient();
 const app = express();
-app.set('trust proxy', 1);  // Trust first proxy
-
+app.set("trust proxy", 1); // Trust first proxy
 
 // === Logger Setup ===
 const logger = winston.createLogger({
@@ -37,37 +36,41 @@ const auditLog = (email, action) => {
 };
 
 // === Middleware Setup ===
-app.use(helmet({
-  contentSecurityPolicy: {
-    directives: {
-      defaultSrc: ["'self'"],
-      scriptSrc: ["'self'"],
-      styleSrc: ["'self'", "'unsafe-inline'"],
-      imgSrc: ["'self'", "data:"],
-      connectSrc: ["'self'"],
-      fontSrc: ["'self'"],
-      objectSrc: ["'none'"],
-      upgradeInsecureRequests: [],
+app.use(
+  helmet({
+    contentSecurityPolicy: {
+      directives: {
+        defaultSrc: ["'self'"],
+        scriptSrc: ["'self'"],
+        styleSrc: ["'self'", "'unsafe-inline'"],
+        imgSrc: ["'self'", "data:"],
+        connectSrc: ["'self'"],
+        fontSrc: ["'self'"],
+        objectSrc: ["'none'"],
+        upgradeInsecureRequests: [],
+      },
     },
-  },
-}));
+  })
+);
 const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:8080",
   "https://voice.cognitiev.com",
-  "https://youragency2.netlify.app"
+  "https://youragency2.netlify.app",
 ];
 
-app.use(cors({
-  origin: function (origin, callback) {
-    if (!origin || allowedOrigins.includes(origin)) {
-      callback(null, true);
-    } else {
-      callback(new Error("Not allowed by CORS"));
-    }
-  },
-  credentials: true,
-}));
+app.use(
+  cors({
+    origin: function (origin, callback) {
+      if (!origin || allowedOrigins.includes(origin)) {
+        callback(null, true);
+      } else {
+        callback(new Error("Not allowed by CORS"));
+      }
+    },
+    credentials: true,
+  })
+);
 
 app.use(express.json());
 app.use(cookieParser());
@@ -82,7 +85,6 @@ if (process.env.NODE_ENV === "production") {
   });
 }
 
-
 // === CSRF Setup ===
 const csrfProtection = csurf({
   cookie: {
@@ -92,12 +94,11 @@ const csrfProtection = csurf({
   },
   value: (req) => {
     // Try to read token from header (recommended for APIs)
-    return req.headers['x-csrf-token'] || req.body._csrf || req.query._csrf;
-  }
+    return req.headers["x-csrf-token"] || req.body._csrf || req.query._csrf;
+  },
 });
 
 app.use(csrfProtection);
-
 
 // === Rate Limiting ===
 const limiter = rateLimit({
@@ -117,7 +118,7 @@ const resend = new Resend(process.env.RESEND_API_KEY);
 const sendOtpEmail = async (email, otp) => {
   try {
     await resend.emails.send({
-      from: "Your Agency <no-reply@mail.cognitiev.com>",  // ✅ matches verified domain
+      from: "Your Agency <no-reply@mail.cognitiev.com>", // ✅ matches verified domain
       to: email,
       subject: "Your OTP Code",
       html: `<p>Your OTP code is: <strong>${otp}</strong>. It will expire in 5 minutes.</p>`,
@@ -129,15 +130,20 @@ const sendOtpEmail = async (email, otp) => {
   }
 };
 
-
 const isPasswordStrong = (password) =>
-  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(password);
+  /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
+    password
+  );
 
 const generateAccessToken = (email, type) =>
-  jwt.sign({ email, type }, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "15m" });
+  jwt.sign({ email, type }, process.env.ACCESS_TOKEN_SECRET, {
+    expiresIn: "15m",
+  });
 
 const generateRefreshToken = (email, type) =>
-  jwt.sign({ email, type }, process.env.REFRESH_TOKEN_SECRET, { expiresIn: "7d" });
+  jwt.sign({ email, type }, process.env.REFRESH_TOKEN_SECRET, {
+    expiresIn: "7d",
+  });
 
 const generateVerificationToken = () => crypto.randomBytes(32).toString("hex");
 
@@ -146,13 +152,14 @@ const MAX_OTP_ATTEMPTS = 5;
 const LOCKOUT_DURATION = 15 * 60 * 1000;
 
 // === Routes ===
-//health check 
+//health check
 app.get("/", (req, res) => {
   res.status(200).json({ message: "Backend is up and running 🚀" });
 });
 
 // Registration
-app.post("/auth/register",
+app.post(
+  "/auth/register",
   body("email").isEmail().normalizeEmail(),
   body("password").isString(),
   body("fullName")
@@ -161,13 +168,15 @@ app.post("/auth/register",
     .withMessage("Full name must be at least 3 characters long"),
   async (req, res) => {
     const errors = validationResult(req);
-    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+    if (!errors.isEmpty())
+      return res.status(400).json({ errors: errors.array() });
 
     const { email, password, fullName } = req.body;
 
     if (!isPasswordStrong(password)) {
       return res.status(400).json({
-        message: "Password must be at least 8 characters, include uppercase, lowercase, number, and special character.",
+        message:
+          "Password must be at least 8 characters, include uppercase, lowercase, number, and special character.",
       });
     }
 
@@ -190,7 +199,12 @@ app.post("/auth/register",
       });
 
       auditLog(email, "Registered");
-      res.status(201).json({ message: "Registered successfully", csrfToken: req.csrfToken() });
+      res
+        .status(201)
+        .json({
+          message: "Registered successfully",
+          csrfToken: req.csrfToken(),
+        });
     } catch (error) {
       logger.error("Register error:", error);
       res.status(500).json({ message: "Server error" });
@@ -198,15 +212,15 @@ app.post("/auth/register",
   }
 );
 
-
-
 // Login - Stage 1
-app.post("/auth/login",
+app.post(
+  "/auth/login",
   body("email").isEmail().normalizeEmail(),
   body("password").isString(),
   async (req, res) => {
     const errors = validationResult(req);
-    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+    if (!errors.isEmpty())
+      return res.status(400).json({ errors: errors.array() });
 
     const { email, password } = req.body;
     try {
@@ -214,12 +228,15 @@ app.post("/auth/login",
       if (!user) return res.status(404).json({ message: "User not found" });
 
       const match = await bcrypt.compare(password, user.passwordHash);
-      if (!match) return res.status(401).json({ message: "Invalid credentials" });
+      if (!match)
+        return res.status(401).json({ message: "Invalid credentials" });
 
       const otp = Math.floor(100000 + Math.random() * 900000).toString();
       const otpHash = await bcrypt.hash(otp, 10);
       const otpExpiry = new Date(Date.now() + 5 * 60 * 1000);
-      logger.info(`Updating OTP for user: ${email} with hash: ${otpHash} expiry: ${otpExpiry}`);
+      logger.info(
+        `Updating OTP for user: ${email} with hash: ${otpHash} expiry: ${otpExpiry}`
+      );
 
       try {
         await prisma.user.update({
@@ -243,23 +260,36 @@ app.post("/auth/login",
 );
 
 // Login - Stage 2 (Verify OTP)
-app.post("/auth/verify-otp", otpLimiter,
+app.post(
+  "/auth/verify-otp",
+  otpLimiter,
   body("email").isEmail().normalizeEmail(),
   body("otp").isLength({ min: 6, max: 6 }).isNumeric(),
   async (req, res) => {
     const errors = validationResult(req);
-    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+    if (!errors.isEmpty())
+      return res.status(400).json({ errors: errors.array() });
 
     const { email, otp } = req.body;
 
     const attemptData = failedOtpAttempts[email];
-    if (attemptData && attemptData.count >= MAX_OTP_ATTEMPTS && (Date.now() - attemptData.lastAttemptTime) < LOCKOUT_DURATION) {
-      return res.status(429).json({ message: "Account locked due to multiple failed OTP attempts. Try after some time." });
+    if (
+      attemptData &&
+      attemptData.count >= MAX_OTP_ATTEMPTS &&
+      Date.now() - attemptData.lastAttemptTime < LOCKOUT_DURATION
+    ) {
+      return res
+        .status(429)
+        .json({
+          message:
+            "Account locked due to multiple failed OTP attempts. Try after some time.",
+        });
     }
 
     try {
       const user = await prisma.user.findUnique({ where: { email } });
-      if (!user || !user.otpHash) return res.status(401).json({ message: "OTP not generated" });
+      if (!user || !user.otpHash)
+        return res.status(401).json({ message: "OTP not generated" });
 
       if (new Date() > user.otpExpiry) {
         await prisma.user.update({
@@ -303,18 +333,19 @@ app.post("/auth/verify-otp", otpLimiter,
         .cookie("accessToken", accessToken, {
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
-          sameSite: "Lax"
-,
+          sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
           maxAge: 15 * 60 * 1000,
         })
         .cookie("refreshToken", refreshToken, {
           httpOnly: true,
+          sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
           secure: process.env.NODE_ENV === "production",
-          sameSite: "Lax"
-,
           maxAge: 7 * 24 * 60 * 60 * 1000,
         })
-        .json({ message: "Logged in successfully", csrfToken: req.csrfToken() });
+        .json({
+          message: "Logged in successfully",
+          csrfToken: req.csrfToken(),
+        });
     } catch (error) {
       logger.error("Verify OTP error:", error);
       res.status(500).json({ message: "Server error" });
@@ -331,11 +362,15 @@ app.post("/auth/refresh-token", async (req, res) => {
     const decoded = jwt.verify(token, process.env.REFRESH_TOKEN_SECRET);
     const dbToken = await prisma.refreshToken.findUnique({ where: { token } });
     if (!dbToken) {
-      await prisma.refreshToken.deleteMany({ where: { userId: decoded.userId } });
+      await prisma.refreshToken.deleteMany({
+        where: { userId: decoded.userId },
+      });
       return res.sendStatus(403);
     }
 
-    const user = await prisma.user.findUnique({ where: { email: decoded.email } });
+    const user = await prisma.user.findUnique({
+      where: { email: decoded.email },
+    });
     if (!user) return res.sendStatus(403);
 
     const accessToken = generateAccessToken(user.email, user.type);
@@ -344,9 +379,8 @@ app.post("/auth/refresh-token", async (req, res) => {
     res
       .cookie("accessToken", accessToken, {
         httpOnly: true,
+        sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
         secure: process.env.NODE_ENV === "production",
-        sameSite: "Lax"
-,
         maxAge: 15 * 60 * 1000,
       })
       .json({ message: "Token refreshed" });
@@ -389,7 +423,6 @@ app.get("/auth/me", (req, res) => {
   }
 });
 
-
 // Helper to generate a secure random token for password reset
 const generateResetToken = () => crypto.randomBytes(32).toString("hex");
 
@@ -412,18 +445,25 @@ const sendResetPasswordEmail = async (email, token) => {
 };
 
 // --- Forgot Password Request ---
-app.post("/auth/forgot-password",
+app.post(
+  "/auth/forgot-password",
   body("email").isEmail().normalizeEmail(),
   async (req, res) => {
     const errors = validationResult(req);
-    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+    if (!errors.isEmpty())
+      return res.status(400).json({ errors: errors.array() });
 
     const { email } = req.body;
     try {
       const user = await prisma.user.findUnique({ where: { email } });
       if (!user) {
         // To avoid user enumeration, respond with 200 anyway
-        return res.status(200).json({ message: "If an account with that email exists, a reset link has been sent." });
+        return res
+          .status(200)
+          .json({
+            message:
+              "If an account with that email exists, a reset link has been sent.",
+          });
       }
 
       // Generate token and expiry (1 hour)
@@ -440,7 +480,12 @@ app.post("/auth/forgot-password",
       await sendResetPasswordEmail(email, token);
       auditLog(email, "Requested password reset");
 
-      res.status(200).json({ message: "If an account with that email exists, a reset link has been sent." });
+      res
+        .status(200)
+        .json({
+          message:
+            "If an account with that email exists, a reset link has been sent.",
+        });
     } catch (error) {
       logger.error("Forgot password error:", error);
       res.status(500).json({ message: "Server error" });
@@ -449,27 +494,33 @@ app.post("/auth/forgot-password",
 );
 
 // --- Reset Password ---
-app.post("/auth/reset-password",
+app.post(
+  "/auth/reset-password",
   body("email").isEmail().normalizeEmail(),
   body("token").isString(),
   body("newPassword").isString(),
   async (req, res) => {
     const errors = validationResult(req);
-    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+    if (!errors.isEmpty())
+      return res.status(400).json({ errors: errors.array() });
 
     const { email, token, newPassword } = req.body;
 
     if (!isPasswordStrong(newPassword)) {
       return res.status(400).json({
-        message: "Password must be at least 8 characters, include uppercase, lowercase, number, and special character.",
+        message:
+          "Password must be at least 8 characters, include uppercase, lowercase, number, and special character.",
       });
     }
 
     try {
       const user = await prisma.user.findUnique({ where: { email } });
-      if (!user) return res.status(404).json({ message: "Invalid token or email" });
+      if (!user)
+        return res.status(404).json({ message: "Invalid token or email" });
 
-      const resetRecord = await prisma.passwordResetToken.findUnique({ where: { userId: user.id } });
+      const resetRecord = await prisma.passwordResetToken.findUnique({
+        where: { userId: user.id },
+      });
       if (!resetRecord || resetRecord.token !== token) {
         return res.status(400).json({ message: "Invalid or expired token" });
       }
@@ -502,7 +553,6 @@ app.post("/auth/reset-password",
   }
 );
 
-
 // Delete User (Right to Erasure)
 app.post("/auth/delete", async (req, res) => {
   const { email } = req.body;
@@ -527,25 +577,26 @@ app.post("/auth/delete", async (req, res) => {
 app.get("/auth/profile", async (req, res) => {
   console.log("accessToken:", req.cookies.accessToken);
   const token = req.cookies.accessToken;
-  console.log(token)
+  console.log(token);
   if (!token) return res.status(401).json({ message: "Not logged in" });
 
   try {
     const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-    console.log("decoded : "+decoded.email)
+    console.log("decoded : " + decoded.email);
     const user = await prisma.user.findUnique({
       where: { email: decoded.email },
-      select: { email: true, fullName: true, type: true},
+      select: { email: true, fullName: true, type: true },
     });
-    console.log(user)
+    console.log(user);
     if (!user) return res.status(404).json({ message: "User not found" });
     res.status(200).json(user);
   } catch (error) {
-    console.log(error)
+    console.log(error);
     res.status(403).json({ message: "Invalid token" });
   }
 });
-app.put("/auth/profile",
+app.put(
+  "/auth/profile",
   body("fullName").optional().isString().isLength({ min: 3 }),
   body("type").optional().isIn(["NORMAL", "ADMIN"]), // validate only accepted types
   async (req, res) => {
@@ -553,7 +604,8 @@ app.put("/auth/profile",
     if (!token) return res.status(401).json({ message: "Not logged in" });
 
     const errors = validationResult(req);
-    if (!errors.isEmpty()) return res.status(400).json({ errors: errors.array() });
+    if (!errors.isEmpty())
+      return res.status(400).json({ errors: errors.array() });
 
     try {
       const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
@@ -577,8 +629,6 @@ app.put("/auth/profile",
     }
   }
 );
-
-
 
 // CSRF Token Endpoint
 app.get("/csrf-token", (req, res) => {
