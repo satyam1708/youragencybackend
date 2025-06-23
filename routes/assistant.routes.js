@@ -9,7 +9,7 @@ const router = express.Router();
 // GET /api/assistants → fetch assistant IDs
 router.get("/", authenticateUser, async (req, res) => {
   try {
-    const assistants = await prisma.assistantID.findMany({
+    const assistants = await prisma.AssistantID.findMany({
       where: { user: { email: req.user.email } },
       orderBy: { createdAt: "desc" },
     });
@@ -29,7 +29,7 @@ router.post("/", authenticateUser, async (req, res) => {
   }
 
   try {
-    const user = await prisma.user.findUnique({
+    const user = await prisma.User.findUnique({
       where: { email: req.user.email },
     });
 
@@ -37,7 +37,7 @@ router.post("/", authenticateUser, async (req, res) => {
       return res.status(404).json({ message: "User not found" });
     }
 
-    const newAssistant = await prisma.assistantID.create({
+    const newAssistant = await prisma.AssistantID.create({
       data: {
         value,
         assistantName,
@@ -66,11 +66,11 @@ router.put("/:id", authenticateUser, async (req, res) => {
   }
 
   try {
-    const user = await prisma.user.findUnique({
+    const user = await prisma.User.findUnique({
       where: { email: req.user.email },
     });
 
-    const assistant = await prisma.assistantID.findUnique({
+    const assistant = await prisma.AssistantID.findUnique({
       where: { id: assistantId },
     });
 
@@ -78,7 +78,7 @@ router.put("/:id", authenticateUser, async (req, res) => {
       return res.status(403).json({ message: "Unauthorized or assistant not found" });
     }
 
-    const updatedAssistant = await prisma.assistantID.update({
+    const updatedAssistant = await prisma.AssistantID.update({
       where: { id: assistantId },
       data: {
         ...(value && { value }),
@@ -101,11 +101,11 @@ router.delete("/:id", authenticateUser, async (req, res) => {
   }
 
   try {
-    const user = await prisma.user.findUnique({
+    const user = await prisma.User.findUnique({
       where: { email: req.user.email },
     });
 
-    const assistant = await prisma.assistantID.findUnique({
+    const assistant = await prisma.AssistantID.findUnique({
       where: { id: assistantId },
     });
 
@@ -113,7 +113,7 @@ router.delete("/:id", authenticateUser, async (req, res) => {
       return res.status(403).json({ message: "Unauthorized or not found" });
     }
 
-    await prisma.assistantID.delete({ where: { id: assistantId } });
+    await prisma.AssistantID.delete({ where: { id: assistantId } });
 
     res.status(200).json({ message: "Assistant deleted" });
   } catch (err) {
