@@ -12,6 +12,9 @@ const winston = require("winston");
 const { Resend } = require("resend");
 const { PrismaClient, UserType } = require("@prisma/client");
 const crypto = require("crypto");
+const assistantRoutes=require("./routes/assistant.routes")
+const voiceaiAssistantRoute=require("./routes/voiceai")
+
 require("dotenv").config();
 
 const prisma = new PrismaClient();
@@ -137,7 +140,7 @@ const isPasswordStrong = (password) =>
 
 const generateAccessToken = (email, type) =>
   jwt.sign({ email, type }, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: "15m",
+    expiresIn: "1h",
   });
 
 const generateRefreshToken = (email, type) =>
@@ -334,7 +337,7 @@ app.post(
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
           sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
-          maxAge: 15 * 60 * 1000,
+          maxAge: 60 * 60 * 1000,
         })
         .cookie("refreshToken", refreshToken, {
           httpOnly: true,
@@ -381,7 +384,7 @@ app.post("/auth/refresh-token", async (req, res) => {
         httpOnly: true,
         sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
         secure: process.env.NODE_ENV === "production",
-        maxAge: 15 * 60 * 1000,
+        maxAge: 60 * 60 * 1000,
       })
       .json({ message: "Token refreshed" });
   } catch (error) {
@@ -639,6 +642,59 @@ app.get("/csrf-token", (req, res) => {
 app.get("/privacy-policy", (req, res) => {
   res.json({ url: "https://yourdomain.com/privacy-policy" });
 });
+
+
+// === Update Vapi Agent ===
+app.patch("/api/vapi/agent/:id", async (req, res) => {
+  const token = req.cookies.accessToken;
+  if (!token) return res.status(401).json({ message: "Not logged in" });
+
+  try {
+    const decoded = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
+
+    const {
+      agentName,
+      prompt,
+      voiceSpeed,
+      firstMessage,
+      recordingEnabled,
+      callForwardingNumber,
+    } = req.body;
+
+    const vapiResponse = await axios.patch(
+      `https://api.vapi.ai/assistant/${req.params.id}`,
+      {
+        name: agentName,
+        model: {
+          messages: [{ role: "system", content: prompt }],
+        },
+        voice: {
+          speed: parseFloat(voiceSpeed),
+        },
+        firstMessage,
+        recordingOptions: {
+          enabled: recordingEnabled,
+        },
+        callForwarding: {
+          number: callForwardingNumber,
+        },
+      },
+      {
+        headers: {
+          Authorization: `Bearer ${process.env.VAPI_API_KEY}`,
+        },
+      }
+    );
+
+    auditLog(decoded.email, `Updated Vapi agent ${req.params.id}`);
+    res.status(200).json({ message: "Agent updated successfully", data: vapiResponse.data });
+  } catch (error) {
+    logger.error("Vapi agent update failed:", error);
+    res.status(500).json({ message: "Failed to update Vapi agent" });
+  }
+});
+app.use("/api/assistants", assistantRoutes);
+app.use("/voiceai",voiceaiAssistantRoute);
 
 // Start Server
 const PORT = process.env.PORT || 5000;

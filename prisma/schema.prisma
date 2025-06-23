@@ -17,23 +17,33 @@ enum UserType {
   NORMAL
   ADMIN
 }
-
 model User {
-  id                      Int       @id @default(autoincrement())
-  email                   String    @unique
+  id                      Int                   @id @default(autoincrement())
+  email                   String                @unique
   passwordHash            String
   fullName                String?   
   type                    UserType
   consentGivenAt          DateTime?
-  isEmailVerified         Boolean   @default(false)
+  isEmailVerified         Boolean               @default(false)
   verificationToken       String?
   verificationTokenExpiry DateTime?
   otpHash                 String?
   otpExpiry               DateTime?
   RefreshToken            RefreshToken[]
   passwordResetTokens     PasswordResetToken[]  
+  assistantIds            AssistantID[]         
 }
 
+model AssistantID {
+  id        Int      @id @default(autoincrement())
+  value     String   
+  userId    Int
+  createdAt DateTime @default(now())
+  assistantName String  
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])  
+}
 
 model RefreshToken {
   id        Int      @id @default(autoincrement())
@@ -46,7 +56,7 @@ model RefreshToken {
 model PasswordResetToken {
   id        Int      @id @default(autoincrement())
   token     String   @unique
-  userId    Int     @unique
+  userId    Int      @unique
   user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   expiresAt DateTime
   createdAt DateTime @default(now())
