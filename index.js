@@ -14,7 +14,7 @@ const { PrismaClient, UserType } = require("@prisma/client");
 const crypto = require("crypto");
 const assistantRoutes=require("./routes/assistant.routes")
 const voiceaiAssistantRoute=require("./routes/voiceai")
-
+const knowlegdeBaseRoute=require("./routes/knowlegdebase.routes")
 require("dotenv").config();
 
 const prisma = new PrismaClient();
@@ -404,9 +404,20 @@ app.post("/auth/logout", async (req, res) => {
 
     await prisma.refreshToken.deleteMany({ where: { token } });
 
-    res.clearCookie("accessToken");
-    res.clearCookie("refreshToken");
-    res.status(200).json({ message: "Logged out" });
+    res
+  .clearCookie("accessToken", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+  })
+  .clearCookie("refreshToken", {
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "production",
+    sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+  })
+  .status(200)
+  .json({ message: "Logged out" });
+
   } catch (error) {
     logger.error("Logout error:", error);
     res.status(500).json({ message: "Server error" });
@@ -695,6 +706,7 @@ app.patch("/api/vapi/agent/:id", async (req, res) => {
 });
 app.use("/api/assistants", assistantRoutes);
 app.use("/voiceai",voiceaiAssistantRoute);
+app.use("/api/voiceai", knowlegdeBaseRoute);
 
 // Start Server
 const PORT = process.env.PORT || 5000;
