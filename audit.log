@@ -293,3 +293,13 @@
 {"level":"info","message":"OTP sent to pandeysatyam1708@gmail.com","timestamp":"2025-06-26T11:04:07.069Z"}
 {"level":"info","message":{"action":"OTP sent","email":"pandeysatyam1708@gmail.com","timestamp":"2025-06-26T11:04:07.069Z"},"timestamp":"2025-06-26T11:04:07.069Z"}
 {"level":"info","message":{"action":"Logged in","email":"pandeysatyam1708@gmail.com","timestamp":"2025-06-26T11:04:24.373Z"},"timestamp":"2025-06-26T11:04:24.373Z"}
+{"level":"info","message":"Updating OTP for user: pandeysatyam1708@gmail.com with hash: $2b$10$rqoNgFZJwMcBiRxzl0D4rexiollI4h7S.F187lKUQqXlRRshgkFzS expiry: Thu Jun 26 2025 17:46:15 GMT+0530 (India Standard Time)","timestamp":"2025-06-26T12:11:15.850Z"}
+{"level":"info","message":"OTP saved successfully for pandeysatyam1708@gmail.com","timestamp":"2025-06-26T12:11:16.285Z"}
+{"level":"info","message":"OTP sent to pandeysatyam1708@gmail.com","timestamp":"2025-06-26T12:11:18.301Z"}
+{"level":"info","message":{"action":"OTP sent","email":"pandeysatyam1708@gmail.com","timestamp":"2025-06-26T12:11:18.302Z"},"timestamp":"2025-06-26T12:11:18.302Z"}
+{"level":"info","message":{"action":"Logged in","email":"pandeysatyam1708@gmail.com","timestamp":"2025-06-26T12:11:35.561Z"},"timestamp":"2025-06-26T12:11:35.562Z"}
+{"level":"info","message":{"action":"Logged out","email":"pandeysatyam1708@gmail.com","timestamp":"2025-06-26T12:57:00.614Z"},"timestamp":"2025-06-26T12:57:00.614Z"}
+{"level":"info","message":"Updating OTP for user: pandeysatyam1708@gmail.com with hash: $2b$10$A2x/Si0YRsqThTTjhWJ3c.85iZU40JuHX/k7.vcvJ5MQcx7AQT09O expiry: Thu Jun 26 2025 18:32:43 GMT+0530 (India Standard Time)","timestamp":"2025-06-26T12:57:43.631Z"}
+{"level":"info","message":"OTP saved successfully for pandeysatyam1708@gmail.com","timestamp":"2025-06-26T12:57:44.084Z"}
+{"level":"info","message":"OTP sent to pandeysatyam1708@gmail.com","timestamp":"2025-06-26T12:57:46.030Z"}
+{"level":"info","message":{"action":"OTP sent","email":"pandeysatyam1708@gmail.com","timestamp":"2025-06-26T12:57:46.031Z"},"timestamp":"2025-06-26T12:57:46.031Z"}
