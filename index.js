@@ -60,7 +60,7 @@ const allowedOrigins = [
   "http://localhost:8080",
   "https://voice.cognitiev.com",
   "https://youragency2.netlify.app",
-  "https://propai.cognitiev.com/"
+  "https://propai.cognitiev.com"
 ];
 
 app.use(
