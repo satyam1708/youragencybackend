@@ -142,7 +142,7 @@ const isPasswordStrong = (password) =>
 
 const generateAccessToken = (email, type) =>
   jwt.sign({ email, type }, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: "1h",
+    expiresIn: "4h",
   });
 
 const generateRefreshToken = (email, type) =>
@@ -335,7 +335,7 @@ app.post(
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
           sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
-          maxAge: 60 * 60 * 1000,
+          maxAge: 4 * 60 * 60 * 1000,
         })
         .cookie("refreshToken", refreshToken, {
           httpOnly: true,
@@ -382,7 +382,7 @@ app.post("/auth/refresh-token", async (req, res) => {
         httpOnly: true,
         sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
         secure: process.env.NODE_ENV === "production",
-        maxAge: 60 * 60 * 1000,
+        maxAge: 4 * 60 * 60 * 1000,
       })
       .json({ message: "Token refreshed" });
   } catch (error) {
