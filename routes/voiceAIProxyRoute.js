@@ -1,0 +1,101 @@
+const express = require("express");
+const axios = require("axios");
+require("dotenv").config();
+const router = express.Router();
+
+
+const VOICE_AI_API_BASE_URL = "https://api.vapi.ai";
+
+// Common CORS headers
+const corsHeaders = {
+  "Access-Control-Allow-Origin": "*",
+  "Access-Control-Allow-Methods": "GET, POST, PUT, PATCH, DELETE, OPTIONS",
+  "Access-Control-Allow-Headers": "Content-Type, Authorization",
+  "Access-Control-Max-Age": "86400",
+};
+
+
+// Middleware to validate API key and build headers
+function buildHeaders(req) {
+  const voiceAIKey = process.env.VAPI_API_KEY;
+  if (!voiceAIKey) {
+    throw new Error("VOICEAIKEY is not set in environment variables.");
+  }
+
+  const headers = {
+    Authorization: `Bearer ${voiceAIKey}`,
+    "Content-Type": "application/json",
+  };
+
+  const allowedForwardHeaders = ["user-agent", "accept", "accept-language"];
+  allowedForwardHeaders.forEach((key) => {
+    if (req.headers[key]) headers[key] = req.headers[key];
+  });
+
+  return headers;
+}
+
+// Helper to forward request to VoiceAI API
+async function proxyRequest(req, res, endpointPath, methodOverride = null) {
+  try {
+    const headers = buildHeaders(req);
+    const targetUrl = `${VOICE_AI_API_BASE_URL}${endpointPath}${req.url.includes("?") ? req.url.slice(req.url.indexOf("?")) : ""}`;
+    const method = methodOverride || req.method;
+
+    const response = await axios({
+      url: targetUrl,
+      method,
+      headers,
+      data: ["GET", "HEAD"].includes(method) ? undefined : req.body,
+      responseType: "text",
+      validateStatus: null,
+    });
+
+    res.set({
+      ...corsHeaders,
+      "Content-Type": response.headers["content-type"] || "application/json",
+    });
+
+    try {
+      const jsonData = JSON.parse(response.data);
+      res.status(response.status).json(jsonData);
+    } catch {
+      res.status(response.status).send(response.data);
+    }
+  } catch (err) {
+    const status = err.response?.status || 500;
+    const data = err.response?.data || { error: "Unknown proxy error" };
+    res.set(corsHeaders).status(status).json({
+      error: "Proxy Error",
+      message: err.message,
+      responseData: data,
+    });
+  }
+}
+
+// === Routes ===
+
+// CALL
+router.get("/call", (req, res) => proxyRequest(req, res, "/call"));
+router.post("/call", (req, res) => proxyRequest(req, res, "/call"));
+
+// ASSISTANT
+router.get("/assistant", (req, res) => proxyRequest(req, res, "/assistant"));
+router.post("/assistant", (req, res) => proxyRequest(req, res, "/assistant"));
+router.patch("/assistant/:id", (req, res) =>
+  proxyRequest(req, res, `/assistant/${req.params.id}`, "PATCH")
+);
+
+// KNOWLEDGE BASE
+router.get("/knowledge-base", (req, res) => proxyRequest(req, res, "/knowledge-base"));
+router.post("/knowledge-base", (req, res) => proxyRequest(req, res, "/knowledge-base"));
+
+// CATCH OTHER ROUTES (OPTIONAL — add if you want dynamic flexibility)
+router.use((req, res) => {
+  res.status(404).set(corsHeaders).json({
+    error: "Route not found",
+    message: `Route ${req.originalUrl} not defined in VoiceAI proxy.`,
+  });
+});
+
+module.exports = router;
