@@ -104,7 +104,48 @@ async function proxyRequest(req, res, endpointPath, methodOverride = null) {
 // === Routes ===
 
 // CALL
-router.get("/call", (req, res) => proxyRequest(req, res, "/call"));
+router.get("/call", async (req, res) => {
+  const origin = req.headers.origin;
+  const corsHeaders = getCorsHeaders(origin);
+
+  const {
+    id,
+    assistantId,
+    phoneNumberId,
+    limit,
+    createdAtGt,
+    createdAtLt,
+    createdAtGe,
+    createdAtLe,
+    updatedAtGt,
+    updatedAtLt,
+    updatedAtGe,
+    updatedAtLe,
+  } = req.query;
+
+  const queryParams = new URLSearchParams();
+  if (id) queryParams.append("id", id);
+  if (assistantId) queryParams.append("assistantId", assistantId);
+  if (phoneNumberId) queryParams.append("phoneNumberId", phoneNumberId);
+
+  // Use provided limit or default to 1000
+  queryParams.append("limit", limit || "200");
+
+  if (createdAtGt) queryParams.append("createdAtGt", createdAtGt);
+  if (createdAtLt) queryParams.append("createdAtLt", createdAtLt);
+  if (createdAtGe) queryParams.append("createdAtGe", createdAtGe);
+  if (createdAtLe) queryParams.append("createdAtLe", createdAtLe);
+  if (updatedAtGt) queryParams.append("updatedAtGt", updatedAtGt);
+  if (updatedAtLt) queryParams.append("updatedAtLt", updatedAtLt);
+  if (updatedAtGe) queryParams.append("updatedAtGe", updatedAtGe);
+  if (updatedAtLe) queryParams.append("updatedAtLe", updatedAtLe);
+
+  const proxiedUrl = queryParams.toString() ? `/call?${queryParams.toString()}` : "/call";
+
+  await proxyRequest(req, res, proxiedUrl, "GET");
+});
+
+
 router.post("/call", (req, res) => proxyRequest(req, res, "/call"));
 
 // ASSISTANT
