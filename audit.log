@@ -323,3 +323,13 @@
 {"level":"info","message":"OTP sent to pandeysatyam1708@gmail.com","timestamp":"2025-07-05T17:59:10.460Z"}
 {"level":"info","message":{"action":"OTP sent","email":"pandeysatyam1708@gmail.com","timestamp":"2025-07-05T17:59:10.460Z"},"timestamp":"2025-07-05T17:59:10.460Z"}
 {"level":"info","message":{"action":"Logged in","email":"pandeysatyam1708@gmail.com","timestamp":"2025-07-05T17:59:26.057Z"},"timestamp":"2025-07-05T17:59:26.057Z"}
+{"level":"info","message":"Updating OTP for user: pandeysatyam1708@gmail.com with hash: $2b$10$NETJjqt/FAR5C6jkVgZWsOMw1ARoJXo/yigQ/6iLcYPNd8G3wOvse expiry: Wed Jul 09 2025 12:47:19 GMT+0530 (India Standard Time)","timestamp":"2025-07-09T07:12:19.952Z"}
+{"level":"info","message":"OTP saved successfully for pandeysatyam1708@gmail.com","timestamp":"2025-07-09T07:12:20.409Z"}
+{"level":"info","message":"OTP sent to pandeysatyam1708@gmail.com","timestamp":"2025-07-09T07:12:22.031Z"}
+{"level":"info","message":{"action":"OTP sent","email":"pandeysatyam1708@gmail.com","timestamp":"2025-07-09T07:12:22.031Z"},"timestamp":"2025-07-09T07:12:22.032Z"}
+{"level":"info","message":{"action":"Logged in","email":"pandeysatyam1708@gmail.com","timestamp":"2025-07-09T07:12:34.931Z"},"timestamp":"2025-07-09T07:12:34.931Z"}
+{"level":"info","message":"Updating OTP for user: pandeysatyam1708@gmail.com with hash: $2b$10$76MjtF6baRwZz6.EY7zqaeIDhE/FFmjyHXhi55a0ekdanuxMEYf2K expiry: Wed Jul 09 2025 15:45:49 GMT+0530 (India Standard Time)","timestamp":"2025-07-09T10:10:49.385Z"}
+{"level":"info","message":"OTP saved successfully for pandeysatyam1708@gmail.com","timestamp":"2025-07-09T10:10:49.990Z"}
+{"level":"info","message":"OTP sent to pandeysatyam1708@gmail.com","timestamp":"2025-07-09T10:10:51.373Z"}
+{"level":"info","message":{"action":"OTP sent","email":"pandeysatyam1708@gmail.com","timestamp":"2025-07-09T10:10:51.374Z"},"timestamp":"2025-07-09T10:10:51.374Z"}
+{"level":"info","message":{"action":"Logged in","email":"pandeysatyam1708@gmail.com","timestamp":"2025-07-09T10:11:02.089Z"},"timestamp":"2025-07-09T10:11:02.089Z"}

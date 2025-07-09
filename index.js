@@ -12,6 +12,7 @@ const winston = require("winston");
 const { Resend } = require("resend");
 const { PrismaClient, UserType } = require("@prisma/client");
 const crypto = require("crypto");
+const axios = require("axios");
 const assistantRoutes = require("./routes/assistant.routes");
 const voiceaiAssistantRoute = require("./routes/voiceai");
 const knowledgeBaseRoute = require("./routes/knowledgebase.routes");
@@ -89,6 +90,24 @@ if (process.env.NODE_ENV === "production") {
     next();
   });
 }
+// Handle preflight requests before CSRF
+app.options(/.*/, (req, res) => {
+  const origin = req.headers.origin;
+  if (allowedOrigins.includes(origin)) {
+    res.header("Access-Control-Allow-Origin", origin);
+    res.header("Access-Control-Allow-Credentials", "true");
+    res.header(
+      "Access-Control-Allow-Methods",
+      "GET, POST, PUT, PATCH, DELETE, OPTIONS"
+    );
+    res.header(
+      "Access-Control-Allow-Headers",
+      "Content-Type, Authorization, X-CSRF-Token"
+    );
+    res.header("Access-Control-Max-Age", "86400");
+  }
+  res.sendStatus(200);
+});
 
 // === CSRF Setup ===
 const csrfProtection = csurf({
@@ -698,13 +717,11 @@ app.patch("/api/vapi/agent/:id", async (req, res) => {
     res.status(500).json({ message: "Failed to update Vapi agent" });
   }
 });
-
 app.use("/api/assistants", assistantRoutes);
 app.use("/voiceai", voiceaiAssistantRoute);
 app.use("/api/knowledge-base", knowledgeBaseRoute);
-
 app.use("/api/voiceai", voiceAIProxyRoute);
-
+app.use("/api/charts", require("./routes/charts.routes"));
 // Start Server
 const PORT = process.env.PORT || 8787;
 app.listen(PORT, () => {

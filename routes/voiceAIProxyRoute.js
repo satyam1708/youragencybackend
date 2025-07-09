@@ -1,5 +1,9 @@
 const express = require("express");
 const axios = require("axios");
+const { authenticateUser } = require("../middlewares/auth");
+const { PrismaClient } = require("@prisma/client");
+const { fetchCallsOptimized } = require("../services/voiceaiService");
+const prisma = new PrismaClient();
 require("dotenv").config();
 const router = express.Router();
 
@@ -39,7 +43,6 @@ router.use((req, res, next) => {
   next(); // Continue to actual route
 });
 
-
 // Middleware to validate API key and build headers
 function buildHeaders(req) {
   const voiceAIKey = process.env.VAPI_API_KEY;
@@ -65,7 +68,6 @@ async function proxyRequest(req, res, endpointPath, methodOverride = null) {
   const origin = req.headers.origin;
     const corsHeaders = getCorsHeaders(origin);
   try {
-
     const headers = buildHeaders(req);
     const targetUrl = `${VOICE_AI_API_BASE_URL}${endpointPath}${req.url.includes("?") ? req.url.slice(req.url.indexOf("?")) : ""}`;
     const method = methodOverride || req.method;
@@ -103,18 +105,18 @@ async function proxyRequest(req, res, endpointPath, methodOverride = null) {
 
 // === Routes ===
 
-// CALL
-router.get("/call", async (req, res) => {
+router.get("/call", authenticateUser, async (req, res) => {
   const origin = req.headers.origin;
   const corsHeaders = getCorsHeaders(origin);
+  res.set(corsHeaders);
 
   const {
-    id,
-    assistantId,
-    phoneNumberId,
-    limit,
     createdAtGt,
     createdAtLt,
+    days,
+    limit,
+    id,
+    phoneNumberId,
     createdAtGe,
     createdAtLe,
     updatedAtGt,
@@ -123,28 +125,133 @@ router.get("/call", async (req, res) => {
     updatedAtLe,
   } = req.query;
 
-  const queryParams = new URLSearchParams();
-  if (id) queryParams.append("id", id);
-  if (assistantId) queryParams.append("assistantId", assistantId);
-  if (phoneNumberId) queryParams.append("phoneNumberId", phoneNumberId);
+  try {
+    const email = req.user.email;
 
-  // Use provided limit or default to 1000
-  queryParams.append("limit", limit || "200");
+    const assistantRecords = await prisma.assistantID.findMany({
+      where: {
+        user: {
+          email: email,
+        },
+      },
+      select: {
+        value: true,
+      },
+    });
 
-  if (createdAtGt) queryParams.append("createdAtGt", createdAtGt);
-  if (createdAtLt) queryParams.append("createdAtLt", createdAtLt);
-  if (createdAtGe) queryParams.append("createdAtGe", createdAtGe);
-  if (createdAtLe) queryParams.append("createdAtLe", createdAtLe);
-  if (updatedAtGt) queryParams.append("updatedAtGt", updatedAtGt);
-  if (updatedAtLt) queryParams.append("updatedAtLt", updatedAtLt);
-  if (updatedAtGe) queryParams.append("updatedAtGe", updatedAtGe);
-  if (updatedAtLe) queryParams.append("updatedAtLe", updatedAtLe);
+    const assistantIds = assistantRecords.map((r) => r.value);
+    console.log("Assistant IDs for user:", assistantIds);
 
-  const proxiedUrl = queryParams.toString() ? `/call?${queryParams.toString()}` : "/call";
+    if (assistantIds.length === 0) {
+      return res.status(200).json([]);
+    }
 
-  await proxyRequest(req, res, proxiedUrl, "GET");
+    // Calculate time range
+    let timePeriod = days;
+    if (!timePeriod && createdAtGt && createdAtLt) {
+      const start = new Date(createdAtGt);
+      const end = new Date(createdAtLt);
+      const diffDays = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
+      if (diffDays <= 7) timePeriod = "7";
+      else if (diffDays <= 30) timePeriod = "30";
+      else if (diffDays <= 60) timePeriod = "60";
+      else timePeriod = "all";
+    }
+
+    // Fetch in parallel
+    const callFetchPromises = assistantIds.map((assistantId) =>
+      fetchCallsOptimized({
+        assistantId,
+        days: timePeriod || "30",
+        customStartDate: createdAtGt,
+        customEndDate: createdAtLt,
+      })
+    );
+
+    const results = await Promise.all(callFetchPromises);
+    const allCalls = results.flatMap((r) => r.calls);
+
+    return res.status(200).json(allCalls);
+  } catch (error) {
+    console.error("Optimized fetch failed, falling back to proxy:", error);
+
+    // If optimization fails, fallback to proxy-based fetch using first assistant ID
+    try {
+      const userId = req.user.userId;
+      const assistantRecords = await prisma.assistantID.findMany({
+        where: { userId },
+        select: { value: true },
+      });
+
+      const assistantIds = assistantRecords.map((r) => r.value);
+      const fallbackAssistantId = assistantIds[0]; // pick the first one
+
+      const queryParams = new URLSearchParams();
+      if (id) queryParams.append("id", id);
+      if (fallbackAssistantId)
+        queryParams.append("assistantId", fallbackAssistantId);
+      if (phoneNumberId) queryParams.append("phoneNumberId", phoneNumberId);
+      if (limit) queryParams.append("limit", limit);
+      else queryParams.append("limit", "200");
+
+      if (createdAtGt) queryParams.append("createdAtGt", createdAtGt);
+      if (createdAtLt) queryParams.append("createdAtLt", createdAtLt);
+      if (createdAtGe) queryParams.append("createdAtGe", createdAtGe);
+      if (createdAtLe) queryParams.append("createdAtLe", createdAtLe);
+      if (updatedAtGt) queryParams.append("updatedAtGt", updatedAtGt);
+      if (updatedAtLt) queryParams.append("updatedAtLt", updatedAtLt);
+      if (updatedAtGe) queryParams.append("updatedAtGe", updatedAtGe);
+      if (updatedAtLe) queryParams.append("updatedAtLe", updatedAtLe);
+
+      const proxiedUrl = `/call?${queryParams.toString()}`;
+      return await proxyRequest(req, res, proxiedUrl, "GET");
+    } catch (fallbackErr) {
+      console.error("Proxy fallback also failed:", fallbackErr);
+      return res.status(500).json({ error: "Failed to fetch call data" });
+    }
+  }
 });
+// // CALL
+// router.get("/call", async (req, res) => {
+//   const origin = req.headers.origin;
+//   const corsHeaders = getCorsHeaders(origin);
 
+//   const {
+//     id,
+//     assistantId,
+//     phoneNumberId,
+//     limit,
+//     createdAtGt,
+//     createdAtLt,
+//     createdAtGe,
+//     createdAtLe,
+//     updatedAtGt,
+//     updatedAtLt,
+//     updatedAtGe,
+//     updatedAtLe,
+//   } = req.query;
+
+//   const queryParams = new URLSearchParams();
+//   if (id) queryParams.append("id", id);
+//   if (assistantId) queryParams.append("assistantId", assistantId);
+//   if (phoneNumberId) queryParams.append("phoneNumberId", phoneNumberId);
+
+//   // Use provided limit or default to 1000
+//   queryParams.append("limit", limit || "200");
+
+//   if (createdAtGt) queryParams.append("createdAtGt", createdAtGt);
+//   if (createdAtLt) queryParams.append("createdAtLt", createdAtLt);
+//   if (createdAtGe) queryParams.append("createdAtGe", createdAtGe);
+//   if (createdAtLe) queryParams.append("createdAtLe", createdAtLe);
+//   if (updatedAtGt) queryParams.append("updatedAtGt", updatedAtGt);
+//   if (updatedAtLt) queryParams.append("updatedAtLt", updatedAtLt);
+//   if (updatedAtGe) queryParams.append("updatedAtGe", updatedAtGe);
+//   if (updatedAtLe) queryParams.append("updatedAtLe", updatedAtLe);
+
+//   const proxiedUrl = queryParams.toString() ? `/call?${queryParams.toString()}` : "/call";
+
+//   await proxyRequest(req, res, proxiedUrl, "GET");
+// });
 
 router.post("/call", (req, res) => proxyRequest(req, res, "/call"));
 
