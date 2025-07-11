@@ -49,8 +49,16 @@ const calculateDateRange = (days) => {
 
 // Smart call fetching with optimized limits
 const fetchCallsOptimized = async (params) => {
-  const { assistantId, days, customStartDate, customEndDate } = params;
-  
+  const {
+    assistantId,
+    days,
+    customStartDate,
+    customEndDate,
+    earliestAt, // 🆕
+    latestAt,   // 🆕
+    phoneNumberId, // 🆕 Added phoneNumberId param
+  } = params;
+
   try {
     // Determine date range
     let startDate, endDate;
@@ -63,18 +71,21 @@ const fetchCallsOptimized = async (params) => {
       endDate = dateRange.endDate;
     }
 
-    // Get optimized limit
     const limit = LIMIT_CONFIG[days] || LIMIT_CONFIG["30"];
 
-    // Build query parameters
     const queryParams = new URLSearchParams();
     if (assistantId) queryParams.append("assistantId", assistantId);
+    if (phoneNumberId) queryParams.append("phoneNumberId", phoneNumberId); // <-- Added here
     queryParams.append("createdAtGt", startDate);
     queryParams.append("createdAtLt", endDate);
     queryParams.append("limit", limit.toString());
 
+    // 🆕 Add scheduled time filters
+    if (earliestAt) queryParams.append("earliestAt", earliestAt);
+    if (latestAt) queryParams.append("latestAt", latestAt);
+
     const url = `https://api.vapi.ai/call?${queryParams.toString()}`;
-    
+
     console.log(`Fetching calls with optimized limit ${limit} for ${days} days`);
 
     const response = await axios.get(url, {
@@ -84,23 +95,23 @@ const fetchCallsOptimized = async (params) => {
       },
     });
 
-    // Process data for charts (aggregate on backend)
     const calls = response.data;
     const chartData = processCallsForCharts(calls, days);
 
     return {
-      calls: calls,
-      chartData: chartData,
+      calls,
+      chartData,
       totalCalls: calls.length,
       dateRange: { startDate, endDate },
-      limit: limit,
+      limit,
     };
-
   } catch (error) {
     console.error("Vapi fetchCallsOptimized error:", error.response?.data || error.message);
     throw new Error("Failed to fetch optimized calls data");
   }
 };
+
+
 
 // Process calls data for chart consumption
 const processCallsForCharts = (calls, timePeriod) => {

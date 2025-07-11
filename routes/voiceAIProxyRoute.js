@@ -7,15 +7,13 @@ const prisma = new PrismaClient();
 require("dotenv").config();
 const router = express.Router();
 
-
-
 const VOICE_AI_API_BASE_URL = "https://api.vapi.ai";
 const allowedOrigins = [
   "http://localhost:5173",
   "http://localhost:8080",
   "https://voice.cognitiev.com",
   "https://youragency2.netlify.app",
-  "https://propai.cognitiev.com"
+  "https://propai.cognitiev.com",
 ];
 
 function getCorsHeaders(origin) {
@@ -66,7 +64,7 @@ function buildHeaders(req) {
 // Helper to forward request to VoiceAI API
 async function proxyRequest(req, res, endpointPath, methodOverride = null) {
   const origin = req.headers.origin;
-    const corsHeaders = getCorsHeaders(origin);
+  const corsHeaders = getCorsHeaders(origin);
   try {
     const headers = buildHeaders(req);
     const targetUrl = `${VOICE_AI_API_BASE_URL}${endpointPath}${req.url.includes("?") ? req.url.slice(req.url.indexOf("?")) : ""}`;
@@ -123,6 +121,8 @@ router.get("/call", authenticateUser, async (req, res) => {
     updatedAtLt,
     updatedAtGe,
     updatedAtLe,
+    earliestAt, 
+    latestAt,
   } = req.query;
 
   try {
@@ -165,8 +165,12 @@ router.get("/call", authenticateUser, async (req, res) => {
         days: timePeriod || "30",
         customStartDate: createdAtGt,
         customEndDate: createdAtLt,
+        earliestAt,
+        latestAt,
+        phoneNumberId,  // add this
       })
     );
+    
 
     const results = await Promise.all(callFetchPromises);
     const allCalls = results.flatMap((r) => r.calls);
@@ -263,19 +267,25 @@ router.patch("/assistant/:id", (req, res) =>
 );
 
 // KNOWLEDGE BASE
-router.get("/knowledge-base", (req, res) => proxyRequest(req, res, "/knowledge-base"));
-router.post("/knowledge-base", (req, res) => proxyRequest(req, res, "/knowledge-base"));
+router.get("/knowledge-base", (req, res) =>
+  proxyRequest(req, res, "/knowledge-base")
+);
+router.post("/knowledge-base", (req, res) =>
+  proxyRequest(req, res, "/knowledge-base")
+);
 
 // CATCH OTHER ROUTES (OPTIONAL — add if you want dynamic flexibility)
 router.use((req, res) => {
   const origin = req.headers.origin;
   const corsHeaders = getCorsHeaders(origin);
 
-  res.status(404).set(corsHeaders).json({
-    error: "Route not found",
-    message: `Route ${req.originalUrl} not defined in VoiceAI proxy.`,
-  });
+  res
+    .status(404)
+    .set(corsHeaders)
+    .json({
+      error: "Route not found",
+      message: `Route ${req.originalUrl} not defined in VoiceAI proxy.`,
+    });
 });
-
 
 module.exports = router;
