@@ -22,10 +22,10 @@ router.get("/", authenticateUser, async (req, res) => {
 
 // POST /api/assistants → create a new assistant ID
 router.post("/", authenticateUser, async (req, res) => {
-  const { value, assistantName } = req.body;
+  const { value, assistantName, phoneNumberId, phoneNumberName } = req.body;
 
-  if (!value || !assistantName) {
-    return res.status(400).json({ message: "Assistant value and name are required" });
+  if (!value || !assistantName || !phoneNumberId || !phoneNumberName) {
+    return res.status(400).json({ message: "Assistant value, name, phoneNumberId and phoneNumberName are required" });
   }
 
   try {
@@ -41,6 +41,8 @@ router.post("/", authenticateUser, async (req, res) => {
       data: {
         value,
         assistantName,
+        phoneNumberId,
+        phoneNumberName,
         userId: user.id,
       },
     });
@@ -52,17 +54,23 @@ router.post("/", authenticateUser, async (req, res) => {
   }
 });
 
+
 // PUT /api/assistants/:id → update assistant's name and/or value
 router.put("/:id", authenticateUser, async (req, res) => {
   const assistantId = parseInt(req.params.id);
-  const { value, assistantName } = req.body;
+  const { value, assistantName, phoneNumberId, phoneNumberName } = req.body;
 
   if (isNaN(assistantId)) {
     return res.status(400).json({ message: "Invalid assistant ID" });
   }
 
-  if (!value && !assistantName) {
+  if (!value && !assistantName && !phoneNumberId && !phoneNumberName) {
     return res.status(400).json({ message: "Nothing to update" });
+  }
+
+  // Optional: If you want phoneNumberId and phoneNumberName updated together:
+  if ((phoneNumberId && !phoneNumberName) || (!phoneNumberId && phoneNumberName)) {
+    return res.status(400).json({ message: "Both phoneNumberId and phoneNumberName must be provided together" });
   }
 
   try {
@@ -83,6 +91,7 @@ router.put("/:id", authenticateUser, async (req, res) => {
       data: {
         ...(value && { value }),
         ...(assistantName && { assistantName }),
+        ...(phoneNumberId && phoneNumberName && { phoneNumberId, phoneNumberName }),
       },
     });
 
@@ -92,6 +101,7 @@ router.put("/:id", authenticateUser, async (req, res) => {
     res.status(500).json({ message: "Error updating assistant" });
   }
 });
+
 
 // DELETE /api/assistants/:id → delete an assistant ID
 router.delete("/:id", authenticateUser, async (req, res) => {

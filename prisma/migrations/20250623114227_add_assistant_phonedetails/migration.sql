@@ -1,0 +1,3 @@
+ALTER TABLE "AssistantID"
+ADD COLUMN "phoneNumberId" TEXT NOT NULL DEFAULT '5ba48580-d122-4787-9ba0-db2d5c0b494c',
+ADD COLUMN "phoneNumberName" TEXT NOT NULL DEFAULT 'Cognitiev Voice AI';
