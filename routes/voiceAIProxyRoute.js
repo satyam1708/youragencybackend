@@ -101,6 +101,34 @@ async function proxyRequest(req, res, endpointPath, methodOverride = null) {
   }
 }
 
+// DELETE a scheduled or ongoing call from Vapi
+router.delete("/call/:callId", authenticateUser, async (req, res) => {
+  const origin = req.headers.origin;
+  const corsHeaders = getCorsHeaders(origin);
+  res.set(corsHeaders);
+
+  try {
+    const headers = buildHeaders(req);
+    const { callId } = req.params;
+
+    const response = await axios.delete(`${VOICE_AI_API_BASE_URL}/call/${callId}`, {
+      headers,
+    });
+
+    res.status(response.status).json(response.data);
+  } catch (err) {
+    console.error("Failed to delete call:", err);
+    const status = err.response?.status || 500;
+    const data = err.response?.data || { error: "Unknown deletion error" };
+    res.status(status).json({
+      error: "Failed to delete call",
+      message: err.message,
+      responseData: data,
+    });
+  }
+});
+
+
 // === Routes ===
 
 router.get("/call", authenticateUser, async (req, res) => {
