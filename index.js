@@ -17,7 +17,6 @@ const assistantRoutes = require("./routes/assistant.routes");
 const voiceaiAssistantRoute = require("./routes/voiceai");
 const knowledgeBaseRoute = require("./routes/knowledgebase.routes");
 const voiceAIProxyRoute = require("./routes/voiceAIProxyRoute");
-const { a } = require("framer-motion/m");
 require("dotenv").config();
 
 const prisma = new PrismaClient();
@@ -67,7 +66,7 @@ const allowedOrigins = process.env.FRONTEND_URLS
   "https://youragency2.netlify.app",
   "https://suisseai.netlify.app",
   "https://your-newai.netlify.app",
-  "https://propai.cognitiev.com/"
+  "https://propai.cognitiev.com"
 ];
 
 app.use(
