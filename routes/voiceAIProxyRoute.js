@@ -17,7 +17,7 @@ const allowedOrigins = process.env.FRONTEND_URLS
   "https://youragency2.netlify.app",
   "https://suisseai.netlify.app",
   "https://your-newai.netlify.app",
-  "https://propai.cognitiev.com/"
+  "https://propai.cognitiev.com"
 ];
 
 function getCorsHeaders(origin) {
