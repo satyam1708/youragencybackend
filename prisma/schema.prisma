@@ -28,10 +28,11 @@ model AssistantID {
   id              Int      @id @default(autoincrement())
   value           String
   userId          Int
-  createdAt       DateTime @default(now())
-  phoneNumberId   String
-  phoneNumberName String
   assistantName   String
+  phoneNumberId   String   @default("default-phone-id")
+  phoneNumberName String   @default("default-phone-name")
+  voice           String?
+  createdAt       DateTime @default(now())
   user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@index([userId])

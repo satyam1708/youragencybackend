@@ -22,10 +22,10 @@ router.get("/", authenticateUser, async (req, res) => {
 
 // POST /api/assistants → create a new assistant ID
 router.post("/", authenticateUser, async (req, res) => {
-  const { value, assistantName, phoneNumberId, phoneNumberName } = req.body;
+  const { value, assistantName, voice } = req.body;
 
-  if (!value || !assistantName || !phoneNumberId || !phoneNumberName) {
-    return res.status(400).json({ message: "Assistant value, name, phoneNumberId and phoneNumberName are required" });
+  if (!value || !assistantName) {
+    return res.status(400).json({ message: "Assistant value and name are required" });
   }
 
   try {
@@ -41,9 +41,9 @@ router.post("/", authenticateUser, async (req, res) => {
       data: {
         value,
         assistantName,
-        phoneNumberId,
-        phoneNumberName,
+        voice: voice || null, // optional
         userId: user.id,
+        // phoneNumberId and phoneNumberName will use defaults from schema
       },
     });
 
@@ -55,22 +55,14 @@ router.post("/", authenticateUser, async (req, res) => {
 });
 
 
-// PUT /api/assistants/:id → update assistant's name and/or value
-router.put("/:id", authenticateUser, async (req, res) => {
-  const assistantId = parseInt(req.params.id);
-  const { value, assistantName, phoneNumberId, phoneNumberName } = req.body;
 
-  if (isNaN(assistantId)) {
-    return res.status(400).json({ message: "Invalid assistant ID" });
-  }
+// PUT /api/assistants/:value → update assistant's name, value, or voice
+router.put("/:value", authenticateUser, async (req, res) => {
+  const assistantValue = req.params.value; // use assistant.value from URL
+  const { value, assistantName, voice } = req.body;
 
-  if (!value && !assistantName && !phoneNumberId && !phoneNumberName) {
+  if (!value && !assistantName && !voice) {
     return res.status(400).json({ message: "Nothing to update" });
-  }
-
-  // Optional: If you want phoneNumberId and phoneNumberName updated together:
-  if ((phoneNumberId && !phoneNumberName) || (!phoneNumberId && phoneNumberName)) {
-    return res.status(400).json({ message: "Both phoneNumberId and phoneNumberName must be provided together" });
   }
 
   try {
@@ -78,22 +70,27 @@ router.put("/:id", authenticateUser, async (req, res) => {
       where: { email: req.user.email },
     });
 
-    const assistant = await prisma.AssistantID.findUnique({
-      where: { id: assistantId },
-    });
-
-    if (!assistant || assistant.userId !== user.id) {
-      return res.status(403).json({ message: "Unauthorized or assistant not found" });
+    if (!user) {
+      return res.status(404).json({ message: "User not found" });
     }
 
-    const updatedAssistant = await prisma.AssistantID.update({
-      where: { id: assistantId },
+    const assistant = await prisma.AssistantID.findFirst({
+      where: { value: assistantValue, userId: user.id }, 
+    });
+    
+    if (!assistant) {
+      return res.status(403).json({ message: "Unauthorized or assistant not found" });
+    }
+    
+    const updatedAssistant = await prisma.AssistantID.updateMany({
+      where: { value: assistantValue, userId: user.id },
       data: {
         ...(value && { value }),
         ...(assistantName && { assistantName }),
-        ...(phoneNumberId && phoneNumberName && { phoneNumberId, phoneNumberName }),
+        ...(voice !== undefined && { voice }),
       },
     });
+    
 
     res.status(200).json({ message: "Assistant updated", assistant: updatedAssistant });
   } catch (err) {
@@ -101,6 +98,7 @@ router.put("/:id", authenticateUser, async (req, res) => {
     res.status(500).json({ message: "Error updating assistant" });
   }
 });
+
 
 
 // DELETE /api/assistants/:id → delete an assistant ID
