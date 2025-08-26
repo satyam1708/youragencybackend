@@ -641,3 +641,40 @@
 {"level":"info","message":"OTP sent to pandeysatyam1708@gmail.com","timestamp":"2025-08-22T11:27:05.403Z"}
 {"level":"info","message":{"action":"OTP sent","email":"pandeysatyam1708@gmail.com","timestamp":"2025-08-22T11:27:05.403Z"},"timestamp":"2025-08-22T11:27:05.403Z"}
 {"level":"info","message":{"action":"Logged in","email":"pandeysatyam1708@gmail.com","timestamp":"2025-08-22T11:27:20.189Z"},"timestamp":"2025-08-22T11:27:20.189Z"}
+{"level":"info","message":"Updating OTP for user: pandeysatyam1708@gmail.com with hash: $2b$10$wHMiVjVp.FN1oaGudTioGOjnzxezUrzV5NuXZN8LfBCbt0qGDQd.y expiry: Mon Aug 25 2025 10:36:45 GMT+0530 (India Standard Time)","timestamp":"2025-08-25T05:01:45.406Z"}
+{"level":"info","message":"OTP saved successfully for pandeysatyam1708@gmail.com","timestamp":"2025-08-25T05:01:45.936Z"}
+{"level":"info","message":"OTP sent to pandeysatyam1708@gmail.com","timestamp":"2025-08-25T05:01:46.888Z"}
+{"level":"info","message":{"action":"OTP sent","email":"pandeysatyam1708@gmail.com","timestamp":"2025-08-25T05:01:46.888Z"},"timestamp":"2025-08-25T05:01:46.888Z"}
+{"level":"info","message":{"action":"Logged in","email":"pandeysatyam1708@gmail.com","timestamp":"2025-08-25T05:02:07.639Z"},"timestamp":"2025-08-25T05:02:07.639Z"}
+{"level":"info","message":"Updating OTP for user: pandeysatyam1708@gmail.com with hash: $2b$10$zWlTXEjMYSqqBXBhCoI4c.mw9r.QKqwn2uoFjvDIrSsNC5p./9cKe expiry: Mon Aug 25 2025 16:28:12 GMT+0530 (India Standard Time)","timestamp":"2025-08-25T10:53:12.237Z"}
+{"level":"info","message":"OTP saved successfully for pandeysatyam1708@gmail.com","timestamp":"2025-08-25T10:53:12.762Z"}
+{"level":"info","message":"OTP sent to pandeysatyam1708@gmail.com","timestamp":"2025-08-25T10:53:14.460Z"}
+{"level":"info","message":{"action":"OTP sent","email":"pandeysatyam1708@gmail.com","timestamp":"2025-08-25T10:53:14.461Z"},"timestamp":"2025-08-25T10:53:14.461Z"}
+{"level":"info","message":{"action":"Logged in","email":"pandeysatyam1708@gmail.com","timestamp":"2025-08-25T10:54:52.349Z"},"timestamp":"2025-08-25T10:54:52.349Z"}
+{"level":"info","message":"Updating OTP for user: pandeysatyam1708@gmail.com with hash: $2b$10$fJ8UsCRumtWbbZlpka0PCeB0rOkvdWYPlLwNPiUkfrvUNcc/LBCoe expiry: Tue Aug 26 2025 15:44:04 GMT+0530 (India Standard Time)","timestamp":"2025-08-26T10:09:04.067Z"}
+{"level":"info","message":"OTP saved successfully for pandeysatyam1708@gmail.com","timestamp":"2025-08-26T10:09:04.573Z"}
+{"level":"info","message":"OTP sent to pandeysatyam1708@gmail.com","timestamp":"2025-08-26T10:09:05.916Z"}
+{"level":"info","message":{"action":"OTP sent","email":"pandeysatyam1708@gmail.com","timestamp":"2025-08-26T10:09:05.916Z"},"timestamp":"2025-08-26T10:09:05.916Z"}
+{"level":"info","message":{"action":"Logged in","email":"pandeysatyam1708@gmail.com","timestamp":"2025-08-26T10:09:46.653Z"},"timestamp":"2025-08-26T10:09:46.653Z"}
+{"level":"info","message":"Updating OTP for user: pandeysatyam1708@gmail.com with hash: $2b$10$BtxRKYVO0fXXkQ8CBuk5uenPdmsCxZi3Mgw44s6s3bqt8m0LxitXW expiry: Tue Aug 26 2025 17:48:10 GMT+0530 (India Standard Time)","timestamp":"2025-08-26T12:13:10.452Z"}
+{"level":"info","message":"OTP saved successfully for pandeysatyam1708@gmail.com","timestamp":"2025-08-26T12:13:10.921Z"}
+{"level":"info","message":"OTP sent to pandeysatyam1708@gmail.com","timestamp":"2025-08-26T12:13:12.416Z"}
+{"level":"info","message":{"action":"OTP sent","email":"pandeysatyam1708@gmail.com","timestamp":"2025-08-26T12:13:12.416Z"},"timestamp":"2025-08-26T12:13:12.417Z"}
+{"level":"info","message":{"action":"Logged in","email":"pandeysatyam1708@gmail.com","timestamp":"2025-08-26T12:13:32.168Z"},"timestamp":"2025-08-26T12:13:32.169Z"}
+{"level":"info","message":"Password reset email sent to satyam@cognitiev.com","timestamp":"2025-08-26T12:16:22.879Z"}
+{"level":"info","message":{"action":"Requested password reset","email":"satyam@cognitiev.com","timestamp":"2025-08-26T12:16:22.879Z"},"timestamp":"2025-08-26T12:16:22.879Z"}
+{"level":"info","message":"Password reset email sent to satyam@cognitiev.com","timestamp":"2025-08-26T12:16:46.918Z"}
+{"level":"info","message":{"action":"Requested password reset","email":"satyam@cognitiev.com","timestamp":"2025-08-26T12:16:46.918Z"},"timestamp":"2025-08-26T12:16:46.918Z"}
+{"level":"info","message":"Password reset email sent to satyam@cognitiev.com","timestamp":"2025-08-26T12:17:18.096Z"}
+{"level":"info","message":{"action":"Requested password reset","email":"satyam@cognitiev.com","timestamp":"2025-08-26T12:17:18.097Z"},"timestamp":"2025-08-26T12:17:18.097Z"}
+{"level":"info","message":"Password reset email sent to satyam@cognitiev.com","timestamp":"2025-08-26T12:24:47.696Z"}
+{"level":"info","message":{"action":"Requested password reset","email":"satyam@cognitiev.com","timestamp":"2025-08-26T12:24:47.696Z"},"timestamp":"2025-08-26T12:24:47.696Z"}
+{"level":"info","message":"Password reset email sent to pandeysatyam1708@gmail.com","timestamp":"2025-08-26T12:25:22.382Z"}
+{"level":"info","message":{"action":"Requested password reset","email":"pandeysatyam1708@gmail.com","timestamp":"2025-08-26T12:25:22.382Z"},"timestamp":"2025-08-26T12:25:22.382Z"}
+{"level":"info","message":"Password reset email sent to pandeysatyam1708@gmail.com","timestamp":"2025-08-26T12:25:39.842Z"}
+{"level":"info","message":{"action":"Requested password reset","email":"pandeysatyam1708@gmail.com","timestamp":"2025-08-26T12:25:39.842Z"},"timestamp":"2025-08-26T12:25:39.842Z"}
+{"level":"info","message":"Updating OTP for user: satyam@cognitiev.com with hash: $2b$10$KjX7ZZoG2qSUQUCxrMRj/.jglUq1iK/AHFuztzCfeIqNlo9k/FE66 expiry: Tue Aug 26 2025 18:01:01 GMT+0530 (India Standard Time)","timestamp":"2025-08-26T12:26:01.589Z"}
+{"level":"info","message":"OTP saved successfully for satyam@cognitiev.com","timestamp":"2025-08-26T12:26:02.154Z"}
+{"level":"info","message":"OTP sent to satyam@cognitiev.com","timestamp":"2025-08-26T12:26:03.469Z"}
+{"level":"info","message":{"action":"OTP sent","email":"satyam@cognitiev.com","timestamp":"2025-08-26T12:26:03.469Z"},"timestamp":"2025-08-26T12:26:03.469Z"}
+{"level":"info","message":{"action":"Logged in","email":"satyam@cognitiev.com","timestamp":"2025-08-26T12:26:17.255Z"},"timestamp":"2025-08-26T12:26:17.255Z"}
