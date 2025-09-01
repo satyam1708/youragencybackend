@@ -9,10 +9,10 @@ const allowedOrigins = [
   "https://youragency2.netlify.app",
   "https://propai.cognitiev.com",
   "https://suisseai.netlify.app",
-  "https://Vaani.cognitiev.com",
-  "https://Voice2.cognitiev.com",
-  "https://Voice3.cognitiev.com",
-  "https://Voice4.cognitiev.com",
+  "https://vaani.cognitiev.com",
+  "https://voice2.cognitiev.com",
+  "https://voice3.cognitiev.com",
+  "https://voice4.cognitiev.com",
 ];
 
 function getCorsHeaders(origin) {
