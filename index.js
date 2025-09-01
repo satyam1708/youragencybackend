@@ -67,7 +67,7 @@ const allowedOrigins = process.env.FRONTEND_URLS
       "https://suisseai.netlify.app",
       "https://your-newai.netlify.app",
       "https://propai.cognitiev.com",
-      "https://Vaani.cognitiev.com",
+      "https://vaani.cognitiev.com",
       "https://Voice2.cognitiev.com",
       "https://Voice3.cognitiev.com",
       "https://Voice4.cognitiev.com",
