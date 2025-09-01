@@ -663,6 +663,8 @@ app.put(
     }
   }
 );
+console.log(process.env.FRONTEND_URLS);
+console.log(allowedOrigins)
 
 // CSRF Token Endpoint
 app.get("/csrf-token", (req, res) => {
