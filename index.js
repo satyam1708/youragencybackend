@@ -58,16 +58,20 @@ app.use(
   })
 );
 const allowedOrigins = process.env.FRONTEND_URLS
-? process.env.FRONTEND_URLS.split(",")
-:[
-  "http://localhost:5173",
-  "http://localhost:8080",
-  "https://voice.cognitiev.com",
-  "https://youragency2.netlify.app",
-  "https://suisseai.netlify.app",
-  "https://your-newai.netlify.app",
-  "https://propai.cognitiev.com"
-];
+  ? process.env.FRONTEND_URLS.split(",")
+  : [
+      "http://localhost:5173",
+      "http://localhost:8080",
+      "https://voice.cognitiev.com",
+      "https://youragency2.netlify.app",
+      "https://suisseai.netlify.app",
+      "https://your-newai.netlify.app",
+      "https://propai.cognitiev.com",
+      "https://Vaani.cognitiev.com",
+      "https://Voice2.cognitiev.com",
+      "https://Voice3.cognitiev.com",
+      "https://Voice4.cognitiev.com",
+    ];
 
 app.use(
   cors({
