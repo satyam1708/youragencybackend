@@ -2,10 +2,10 @@
 const axios = require("axios");
 // Smart limit configuration based on time period
 const LIMIT_CONFIG = {
-  "7": 100,    // 7 days - usually fast
-  "30": 200,   // 30 days - reasonable performance
-  "60": 300,   // 60 days - moderate performance
-  "all": 500,  // All time - will use pagination
+  "7": 500,    // 7 days - usually fast
+  "30": 700,   // 30 days - reasonable performance
+  "60": 1000,   // 60 days - moderate performance
+  "all": 1000,  // All time - will use pagination
 };
 
 const createKnowledgeBase = async (payload) => {
