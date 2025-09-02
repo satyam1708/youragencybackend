@@ -139,28 +139,28 @@ const limiter = rateLimit({
 });
 app.use(limiter);
 
-const otpLimiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 5,
-  message: "Too many OTP attempts, please try again later.",
-});
+// const otpLimiter = rateLimit({
+//   windowMs: 15 * 60 * 1000,
+//   max: 5,
+//   message: "Too many OTP attempts, please try again later.",
+// });
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// const resend = new Resend(process.env.RESEND_API_KEY);
 
-const sendOtpEmail = async (email, otp) => {
-  try {
-    await resend.emails.send({
-      from: "Your Agency <no-reply@mail.cognitiev.com>", // ✅ matches verified domain
-      to: email,
-      subject: "Your OTP Code",
-      html: `<p>Your OTP code is: <strong>${otp}</strong>. It will expire in 5 minutes.</p>`,
-    });
-    logger.info(`OTP sent to ${email}`);
-  } catch (error) {
-    logger.error("Error sending OTP email:", error);
-    console.error("Full error:", JSON.stringify(error, null, 2)); // Add this for debugging
-  }
-};
+// const sendOtpEmail = async (email, otp) => {
+//   try {
+//     await resend.emails.send({
+//       from: "Your Agency <no-reply@mail.cognitiev.com>", // ✅ matches verified domain
+//       to: email,
+//       subject: "Your OTP Code",
+//       html: `<p>Your OTP code is: <strong>${otp}</strong>. It will expire in 5 minutes.</p>`,
+//     });
+//     logger.info(`OTP sent to ${email}`);
+//   } catch (error) {
+//     logger.error("Error sending OTP email:", error);
+//     console.error("Full error:", JSON.stringify(error, null, 2)); // Add this for debugging
+//   }
+// };
 
 const isPasswordStrong = (password) =>
   /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/.test(
@@ -169,7 +169,7 @@ const isPasswordStrong = (password) =>
 
 const generateAccessToken = (email, type) =>
   jwt.sign({ email, type }, process.env.ACCESS_TOKEN_SECRET, {
-    expiresIn: "2h",
+    expiresIn: "6h",
   });
 
 const generateRefreshToken = (email, type) =>
@@ -179,9 +179,9 @@ const generateRefreshToken = (email, type) =>
 
 const generateVerificationToken = () => crypto.randomBytes(32).toString("hex");
 
-const failedOtpAttempts = {};
-const MAX_OTP_ATTEMPTS = 5;
-const LOCKOUT_DURATION = 15 * 60 * 1000;
+// const failedOtpAttempts = {};
+// const MAX_OTP_ATTEMPTS = 5;
+// const LOCKOUT_DURATION = 15 * 60 * 1000;
 
 // === Routes ===
 //health check
@@ -243,6 +243,7 @@ app.post(
 );
 
 // Login - Stage 1
+
 app.post(
   "/auth/login",
   body("email").isEmail().normalizeEmail(),
@@ -253,93 +254,25 @@ app.post(
       return res.status(400).json({ errors: errors.array() });
 
     const { email, password } = req.body;
+
     try {
       const user = await prisma.user.findUnique({ where: { email } });
       if (!user) return res.status(404).json({ message: "User not found" });
 
-      const match = await bcrypt.compare(password, user.passwordHash);
+      let match = false;
+
+      if (user.passwordHash.startsWith("$2a$") || user.passwordHash.startsWith("$2b$")) {
+        // 🔐 It's a bcrypt hash
+        match = await bcrypt.compare(password, user.passwordHash);
+      } else {
+        // 📝 It's plain text (with possible trailing newline)
+        match = password.trim() === user.passwordHash.trim();
+      }
+
       if (!match)
         return res.status(401).json({ message: "Invalid credentials" });
 
-      const otp = Math.floor(100000 + Math.random() * 900000).toString();
-      const otpHash = await bcrypt.hash(otp, 10);
-      const otpExpiry = new Date(Date.now() + 5 * 60 * 1000);
-      logger.info(
-        `Updating OTP for user: ${email} with hash: ${otpHash} expiry: ${otpExpiry}`
-      );
-
-      try {
-        await prisma.user.update({
-          where: { email },
-          data: { otpHash, otpExpiry },
-        });
-        logger.info(`OTP saved successfully for ${email}`);
-      } catch (error) {
-        logger.error(`Failed to save OTP for ${email}: ${error}`);
-      }
-
-      await sendOtpEmail(email, otp);
-      auditLog(email, "OTP sent");
-
-      res.status(200).json({ message: "OTP sent", csrfToken: req.csrfToken() });
-    } catch (error) {
-      logger.error("Login error:", error);
-      res.status(500).json({ message: "Server error" });
-    }
-  }
-);
-
-// Login - Stage 2 (Verify OTP)
-app.post(
-  "/auth/verify-otp",
-  otpLimiter,
-  body("email").isEmail().normalizeEmail(),
-  body("otp").isLength({ min: 6, max: 6 }).isNumeric(),
-  async (req, res) => {
-    const errors = validationResult(req);
-    if (!errors.isEmpty())
-      return res.status(400).json({ errors: errors.array() });
-
-    const { email, otp } = req.body;
-
-    const attemptData = failedOtpAttempts[email];
-    if (
-      attemptData &&
-      attemptData.count >= MAX_OTP_ATTEMPTS &&
-      Date.now() - attemptData.lastAttemptTime < LOCKOUT_DURATION
-    ) {
-      return res.status(429).json({
-        message:
-          "Account locked due to multiple failed OTP attempts. Try after some time.",
-      });
-    }
-
-    try {
-      const user = await prisma.user.findUnique({ where: { email } });
-      if (!user || !user.otpHash)
-        return res.status(401).json({ message: "OTP not generated" });
-
-      if (new Date() > user.otpExpiry) {
-        await prisma.user.update({
-          where: { email },
-          data: { otpHash: null, otpExpiry: null },
-        });
-        return res.status(401).json({ message: "OTP expired" });
-      }
-
-      const validOtp = await bcrypt.compare(otp, user.otpHash);
-      if (!validOtp) {
-        if (!failedOtpAttempts[email]) {
-          failedOtpAttempts[email] = { count: 1, lastAttemptTime: Date.now() };
-        } else {
-          failedOtpAttempts[email].count++;
-          failedOtpAttempts[email].lastAttemptTime = Date.now();
-        }
-        return res.status(401).json({ message: "Invalid OTP" });
-      }
-
-      delete failedOtpAttempts[email];
-
+      // ✅ Generate tokens
       const accessToken = generateAccessToken(user.email, user.type);
       const refreshToken = generateRefreshToken(user.email, user.type);
 
@@ -350,11 +283,6 @@ app.post(
         },
       });
 
-      await prisma.user.update({
-        where: { email },
-        data: { otpHash: null, otpExpiry: null },
-      });
-
       auditLog(email, "Logged in");
 
       res
@@ -362,7 +290,7 @@ app.post(
           httpOnly: true,
           secure: process.env.NODE_ENV === "production",
           sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
-          maxAge: 2 * 60 * 60 * 1000,
+          maxAge: 6 * 60 * 60 * 1000,
         })
         .cookie("refreshToken", refreshToken, {
           httpOnly: true,
@@ -375,11 +303,104 @@ app.post(
           csrfToken: req.csrfToken(),
         });
     } catch (error) {
-      logger.error("Verify OTP error:", error);
+      logger.error("Login error:", error);
       res.status(500).json({ message: "Server error" });
     }
   }
 );
+
+
+// Login - Stage 2 (Verify OTP)
+// app.post(
+//   "/auth/verify-otp",
+//   otpLimiter,
+//   body("email").isEmail().normalizeEmail(),
+//   body("otp").isLength({ min: 6, max: 6 }).isNumeric(),
+//   async (req, res) => {
+//     const errors = validationResult(req);
+//     if (!errors.isEmpty())
+//       return res.status(400).json({ errors: errors.array() });
+
+//     const { email, otp } = req.body;
+
+//     const attemptData = failedOtpAttempts[email];
+//     if (
+//       attemptData &&
+//       attemptData.count >= MAX_OTP_ATTEMPTS &&
+//       Date.now() - attemptData.lastAttemptTime < LOCKOUT_DURATION
+//     ) {
+//       return res.status(429).json({
+//         message:
+//           "Account locked due to multiple failed OTP attempts. Try after some time.",
+//       });
+//     }
+
+//     try {
+//       const user = await prisma.user.findUnique({ where: { email } });
+//       if (!user || !user.otpHash)
+//         return res.status(401).json({ message: "OTP not generated" });
+
+//       if (new Date() > user.otpExpiry) {
+//         await prisma.user.update({
+//           where: { email },
+//           data: { otpHash: null, otpExpiry: null },
+//         });
+//         return res.status(401).json({ message: "OTP expired" });
+//       }
+
+//       const validOtp = await bcrypt.compare(otp, user.otpHash);
+//       if (!validOtp) {
+//         if (!failedOtpAttempts[email]) {
+//           failedOtpAttempts[email] = { count: 1, lastAttemptTime: Date.now() };
+//         } else {
+//           failedOtpAttempts[email].count++;
+//           failedOtpAttempts[email].lastAttemptTime = Date.now();
+//         }
+//         return res.status(401).json({ message: "Invalid OTP" });
+//       }
+
+//       delete failedOtpAttempts[email];
+
+//       const accessToken = generateAccessToken(user.email, user.type);
+//       const refreshToken = generateRefreshToken(user.email, user.type);
+
+//       await prisma.refreshToken.create({
+//         data: {
+//           token: refreshToken,
+//           userId: user.id,
+//         },
+//       });
+
+//       await prisma.user.update({
+//         where: { email },
+//         data: { otpHash: null, otpExpiry: null },
+//       });
+
+//       auditLog(email, "Logged in");
+
+//       res
+//         .cookie("accessToken", accessToken, {
+//           httpOnly: true,
+//           secure: process.env.NODE_ENV === "production",
+//           sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+//           maxAge: 2 * 60 * 60 * 1000,
+//         })
+//         .cookie("refreshToken", refreshToken, {
+//           httpOnly: true,
+//           sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
+//           secure: process.env.NODE_ENV === "production",
+//           maxAge: 7 * 24 * 60 * 60 * 1000,
+//         })
+//         .json({
+//           message: "Logged in successfully",
+//           csrfToken: req.csrfToken(),
+//         });
+//     } catch (error) {
+//       logger.error("Verify OTP error:", error);
+//       res.status(500).json({ message: "Server error" });
+//     }
+//   }
+// );
 
 // Refresh Access Token
 app.post("/auth/refresh-token", async (req, res) => {
@@ -409,7 +430,7 @@ app.post("/auth/refresh-token", async (req, res) => {
         httpOnly: true,
         sameSite: process.env.NODE_ENV === "production" ? "None" : "Lax",
         secure: process.env.NODE_ENV === "production",
-        maxAge: 2 * 60 * 60 * 1000,
+        maxAge: 6 * 60 * 60 * 1000,
       })
       .json({ message: "Token refreshed" });
   } catch (error) {
@@ -664,7 +685,7 @@ app.put(
   }
 );
 console.log(process.env.FRONTEND_URLS);
-console.log(allowedOrigins)
+console.log(allowedOrigins);
 
 // CSRF Token Endpoint
 app.get("/csrf-token", (req, res) => {
