@@ -8,7 +8,11 @@ const allowedOrigins = [
   "https://voice.cognitiev.com",
   "https://youragency2.netlify.app",
   "https://propai.cognitiev.com",
-  "https://suisseai.netlify.app"
+  "https://suisseai.netlify.app",
+  "https://vaani.cognitiev.com",
+  "https://voice2.cognitiev.com",
+  "https://voice3.cognitiev.com",
+  "https://voice4.cognitiev.com",
 ];
 
 function getCorsHeaders(origin) {
@@ -46,7 +50,9 @@ router.get("/overview", async (req, res) => {
       createdAtLt,
     } = req.query;
 
-    console.log(`Fetching chart data for ${days} days, assistant: ${assistantId}`);
+    console.log(
+      `Fetching chart data for ${days} days, assistant: ${assistantId}`
+    );
 
     // Use optimized service to fetch calls data
     const result = await fetchCallsOptimized({
@@ -69,19 +75,18 @@ router.get("/overview", async (req, res) => {
       performance: {
         optimizedLimit: result.limit,
         message: `Fetched ${result.totalCalls} calls with optimized limit of ${result.limit} for ${days} days`,
-      }
+      },
     };
 
     res.set(corsHeaders);
     res.status(200).json(response);
-
   } catch (error) {
     console.error("Chart data fetch error:", error);
     res.set(corsHeaders);
     res.status(500).json({
       error: "Failed to fetch chart data",
       message: error.message,
-      fallback: "Consider using raw /call endpoint with manual processing"
+      fallback: "Consider using raw /call endpoint with manual processing",
     });
   }
 });
@@ -90,7 +95,7 @@ router.get("/overview", async (req, res) => {
 router.get("/performance-info", async (req, res) => {
   const origin = req.headers.origin;
   const corsHeaders = getCorsHeaders(origin);
-  
+
   const { LIMIT_CONFIG } = require("../services/voiceaiService");
 
   res.set(corsHeaders);
@@ -98,11 +103,11 @@ router.get("/performance-info", async (req, res) => {
     optimizationConfig: LIMIT_CONFIG,
     recommendations: {
       "7_days": "Fast loading - limit 100 calls",
-      "30_days": "Good performance - limit 200 calls", 
+      "30_days": "Good performance - limit 200 calls",
       "60_days": "Moderate performance - limit 300 calls",
-      "all_time": "May be slower - limit 500 calls, consider pagination"
+      all_time: "May be slower - limit 500 calls, consider pagination",
     },
-    usage: "Add ?days=7|30|60|all to your requests for optimized performance"
+    usage: "Add ?days=7|30|60|all to your requests for optimized performance",
   });
 });
 
