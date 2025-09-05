@@ -186,11 +186,13 @@ router.get("/call", authenticateUser, async (req, res) => {
 
     // Calculate time range
     let timePeriod = days;
+    console.log("Initial timePeriod (days):", timePeriod);
     if (!timePeriod && createdAtGt && createdAtLt) {
       const start = new Date(createdAtGt);
       const end = new Date(createdAtLt);
       const diffDays = Math.ceil((end - start) / (1000 * 60 * 60 * 24));
-      if (diffDays <= 7) timePeriod = "7";
+      if (diffDays == 1) timePeriod = "1";
+      else if (diffDays <= 7) timePeriod = "7";
       else if (diffDays <= 30) timePeriod = "30";
       else if (diffDays <= 60) timePeriod = "60";
       else timePeriod = "all";
