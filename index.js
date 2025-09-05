@@ -132,12 +132,25 @@ const csrfProtection = csurf({
 
 app.use(csrfProtection);
 
-// === Rate Limiting ===
-const limiter = rateLimit({
-  windowMs: 15 * 60 * 1000,
-  max: 100,
+// Global limiter (anti-DoS, very loose)
+const globalLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000, // 15 minutes
+  max: 5000, // allow plenty of traffic
+  standardHeaders: true,
+  legacyHeaders: false,
 });
-app.use(limiter);
+app.use(globalLimiter);
+
+// Auth limiter (much stricter)
+const authLimiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 10, // only 10 attempts in 15 min
+  message: "Too many login attempts, please try again later.",
+});
+
+app.use("/auth/login", authLimiter);
+app.use("/auth/register", authLimiter);
+app.use("/auth/forgot-password", authLimiter);
 
 // const otpLimiter = rateLimit({
 //   windowMs: 15 * 60 * 1000,
