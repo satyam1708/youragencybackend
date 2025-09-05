@@ -2,6 +2,7 @@
 const axios = require("axios");
 // Smart limit configuration based on time period
 const LIMIT_CONFIG = {
+  "1":100,    // 1 day - very fast
   "7": 500,    // 7 days - usually fast
   "30": 700,   // 30 days - reasonable performance
   "60": 1000,   // 60 days - moderate performance
@@ -70,9 +71,11 @@ const fetchCallsOptimized = async (params) => {
       startDate = dateRange.startDate;
       endDate = dateRange.endDate;
     }
+    console.log(`Fetching calls from ${startDate} to ${endDate}`);
+    console.log(days)
 
     const limit = LIMIT_CONFIG[days] || LIMIT_CONFIG["30"];
-
+    console.log(`Using limit: ${limit}`);
     const queryParams = new URLSearchParams();
     if (assistantId) queryParams.append("assistantId", assistantId);
     if (phoneNumberId) queryParams.append("phoneNumberId", phoneNumberId); // <-- Added here
@@ -97,6 +100,7 @@ const fetchCallsOptimized = async (params) => {
 
     const calls = response.data;
     const chartData = processCallsForCharts(calls, days);
+    console.log(`Fetched ${calls.length} calls`);
 
     return {
       calls,
