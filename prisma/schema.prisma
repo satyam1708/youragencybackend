@@ -29,8 +29,8 @@ model AssistantID {
   value           String
   userId          Int
   assistantName   String
-  phoneNumberId   String   @default("default-phone-id")
-  phoneNumberName String   @default("default-phone-name")
+  phoneNumberId   String   @default("5ba48580-d122-4787-9ba0-db2d5c0b494c")
+  phoneNumberName String   @default("Cognitiev Voice AI")
   voice           String?
   createdAt       DateTime @default(now())
   user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
